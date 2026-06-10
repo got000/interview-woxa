@@ -58,7 +58,7 @@ jobs:
       - name: Export Infisical secrets to .env.prod
         run: |
           docker run --rm infisical/cli:latest \
-            infisical export \
+            export \
             --token="${{ secrets.INFISICAL_TOKEN }}" \
             --domain="${{ secrets.INFISICAL_URL }}" \
             --env=prod > .env.prod
