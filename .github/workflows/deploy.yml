@@ -1,0 +1,89 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  OWNER: got000
+  API_IMAGE: broker-api
+  WEB_IMAGE: broker-web
+  TAG_IMAGE: prod
+  PROD_DIRECTORY: /var/www/interview-woxa
+
+jobs:
+  build:
+    name: Build and Push Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR for push
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login $REGISTRY -u $OWNER --password-stdin
+
+      - name: Build and push API image
+        run: |
+          time docker build \
+            -t $REGISTRY/$OWNER/$API_IMAGE:$TAG_IMAGE \
+            -f apps/broker-api/Dockerfile .
+
+          docker push $REGISTRY/$OWNER/$API_IMAGE:$TAG_IMAGE
+
+      - name: Build and push Web image
+        run: |
+          time docker build \
+            -t $REGISTRY/$OWNER/$WEB_IMAGE:$TAG_IMAGE \
+            -f apps/broker-web/Dockerfile .
+
+          docker push $REGISTRY/$OWNER/$WEB_IMAGE:$TAG_IMAGE
+
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Export Infisical secrets to .env.prod
+        run: |
+          docker run --rm infisical/cli:latest \
+            infisical export \
+            --token="${{ secrets.INFISICAL_TOKEN }}" \
+            --domain="${{ secrets.INFISICAL_URL }}" \
+            --env=prod > .env.prod
+
+      - name: Copy files to server
+        run: |
+          mkdir -p ~/.ssh
+
+          echo "${{ secrets.PROD_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          scp -o StrictHostKeyChecking=no docker-compose.yml \
+            ${{ secrets.PROD_USER }}@${{ secrets.PROD_IP_SERVER }}:$PROD_DIRECTORY/
+
+          scp -o StrictHostKeyChecking=no .env.prod \
+            ${{ secrets.PROD_USER }}@${{ secrets.PROD_IP_SERVER }}:$PROD_DIRECTORY/
+
+      - name: Deploy on server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_IP_SERVER }} "
+            cd $PROD_DIRECTORY &&
+
+            echo '${{ secrets.GHCR_TOKEN }}' | docker login ghcr.io -u got000 --password-stdin &&
+
+            docker compose pull &&
+            docker compose up -d &&
+            docker image prune -a -f
+          "

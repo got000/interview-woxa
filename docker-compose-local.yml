@@ -1,0 +1,32 @@
+services:
+  api:
+    image: ghcr.io/got000/broker-api:prod
+    container_name: broker-api
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    env_file:
+      - .env.prod
+    depends_on:
+      - mongo
+
+  web:
+    image: ghcr.io/got000/broker-web:prod
+    container_name: broker-web
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.prod
+    depends_on:
+      - api
+
+  mongo:
+    image: mongo:7
+    container_name: broker-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
