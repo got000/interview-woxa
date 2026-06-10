@@ -55,10 +55,15 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
+      - name: Install Infisical CLI
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+          sudo apt-get update
+          sudo apt-get install -y infisical
+
       - name: Export Infisical secrets to .env.prod
         run: |
-          docker run --rm infisical/cli:latest \
-            export \
+          infisical export \
             --token="${{ secrets.INFISICAL_TOKEN }}" \
             --domain="${{ secrets.INFISICAL_URL }}" \
             --env=prod > .env.prod
