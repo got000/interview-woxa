@@ -49,6 +49,8 @@ export interface CreateBrokerInput {
   contact_detail: ContactDetail;
 }
 
+export type BrokerStatus = 'active' | 'inactive';
+
 export interface CreateUserInput {
   full_name: string;
   email: string;

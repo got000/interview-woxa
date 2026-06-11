@@ -1,7 +1,9 @@
 import { DefaultInput } from './../../../config/dto';
-import { IsEmailField } from './../../../config/decorators/validation.decorator';
+import {
+  IsEmailField,
+  ToLowerCase,
+} from './../../../config/decorators/validation.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UserInput {
@@ -16,7 +18,7 @@ export class UserInput {
   @IsEmailField({
     example: 'user@example.com',
   })
-  @Transform(({ value }) => value?.trim().toLowerCase())
+  @ToLowerCase()
   email: string;
 }
 

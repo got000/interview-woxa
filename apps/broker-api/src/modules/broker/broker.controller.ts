@@ -12,10 +12,11 @@ import {
 } from '@nestjs/common';
 import { BrokerService } from './broker.service';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from './../../config/guard/auth.guard';
+import { AuthGuard, OptionalAuthGuard } from './../../config/guard/auth.guard';
 import {
   CreateBrokerInput,
   GetBrokerInput,
+  UpdateBrokerStatusInput,
   UpdateSlugInput,
 } from './inputs/broker.input';
 import { User } from 'src/config/decorators/user.decorator';
@@ -32,8 +33,15 @@ export class BrokerController {
   }
 
   @Get(':slug')
-  async getBroker(@Param('slug') slug: string) {
-    return await this.brokerService.getBroker(slug);
+  @UseGuards(OptionalAuthGuard)
+  async getBroker(
+    @Param('slug') slug: string,
+    @User() user: IUserInSession,
+  ) {
+    return await this.brokerService.getBroker(
+      slug.toLocaleLowerCase?.(),
+      Boolean(user),
+    );
   }
 
   @Get()
@@ -68,6 +76,16 @@ export class BrokerController {
     @Body() payload: UpdateSlugInput,
   ) {
     return await this.brokerService.updateSlug(brokerId, payload, user?._id);
+  }
+
+  @Patch(':id/status')
+  @UseGuards(AuthGuard)
+  async updateStatus(
+    @Param('id') brokerId: string,
+    @Body() payload: UpdateBrokerStatusInput,
+    @User() user: IUserInSession,
+  ) {
+    return await this.brokerService.updateStatus(brokerId, payload, user?._id);
   }
 
   @Delete(':id')

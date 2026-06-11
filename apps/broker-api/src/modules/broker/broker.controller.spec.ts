@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BrokerController } from './broker.controller';
 import { BrokerService } from './broker.service';
 import { IUserInSession } from 'src/config/decorators/decorator.inteface';
+import { StatusEnum } from 'src/config/constants';
 
 const CURRENT_USER = {
   _id: 'user-1',
@@ -18,6 +19,7 @@ describe('BrokerController', () => {
     createBroker: jest.Mock;
     updateBroker: jest.Mock;
     updateSlug: jest.Mock;
+    updateStatus: jest.Mock;
     deleteOrRestoreBroker: jest.Mock;
   };
 
@@ -29,6 +31,7 @@ describe('BrokerController', () => {
       createBroker: jest.fn(),
       updateBroker: jest.fn(),
       updateSlug: jest.fn(),
+      updateStatus: jest.fn(),
       deleteOrRestoreBroker: jest.fn(),
     };
 
@@ -54,12 +57,24 @@ describe('BrokerController', () => {
   });
 
   describe('getBroker', () => {
-    it('delegates to BrokerService.getBroker with the slug', async () => {
+    it('delegates to BrokerService.getBroker with the slug and login status', async () => {
       const result = { result: { slug: 'acme' } };
       brokerService.getBroker.mockResolvedValue(result);
 
-      await expect(controller.getBroker('acme')).resolves.toBe(result);
-      expect(brokerService.getBroker).toHaveBeenCalledWith('acme');
+      await expect(
+        controller.getBroker('acme', CURRENT_USER),
+      ).resolves.toBe(result);
+      expect(brokerService.getBroker).toHaveBeenCalledWith('acme', true);
+    });
+
+    it('passes isLoggedIn=false when there is no user', async () => {
+      const result = { result: { slug: 'acme' } };
+      brokerService.getBroker.mockResolvedValue(result);
+
+      await expect(
+        controller.getBroker('acme', undefined as unknown as IUserInSession),
+      ).resolves.toBe(result);
+      expect(brokerService.getBroker).toHaveBeenCalledWith('acme', false);
     });
   });
 
@@ -117,6 +132,23 @@ describe('BrokerController', () => {
         controller.updateSlug('broker-1', CURRENT_USER, payload),
       ).resolves.toBe(result);
       expect(brokerService.updateSlug).toHaveBeenCalledWith(
+        'broker-1',
+        payload,
+        CURRENT_USER._id,
+      );
+    });
+  });
+
+  describe('updateStatus', () => {
+    it('delegates to BrokerService.updateStatus with the current user id', async () => {
+      const payload = { status: StatusEnum.INACTIVE };
+      const result = { message: 'update broker status success' };
+      brokerService.updateStatus.mockResolvedValue(result);
+
+      await expect(
+        controller.updateStatus('broker-1', payload, CURRENT_USER),
+      ).resolves.toBe(result);
+      expect(brokerService.updateStatus).toHaveBeenCalledWith(
         'broker-1',
         payload,
         CURRENT_USER._id,

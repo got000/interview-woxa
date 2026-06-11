@@ -21,6 +21,7 @@ export class SignInInput {
 
 export class RefreshTokenInput {
   @ApiProperty({
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     required: true,
   })
   @IsNotEmpty()

@@ -47,3 +47,10 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy) {
 
 @Injectable()
 export class AuthGuard extends PassportAuthGuard('jwt') {}
+
+@Injectable()
+export class OptionalAuthGuard extends PassportAuthGuard('jwt') {
+  handleRequest(err: any, user: any) {
+    return user || null;
+  }
+}

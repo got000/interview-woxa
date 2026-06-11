@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import {
   Broker,
+  BrokerStatus,
   BrokerType,
   CreateBrokerInput,
   CreateUserInput,
@@ -14,7 +15,11 @@ const api = axios.create({
 });
 
 export class ApiError extends Error {
-  constructor(message: string, public statusCode: number) {
+  constructor(
+    message: string,
+    public statusCode: number,
+    public code?: string,
+  ) {
     super(message);
     this.name = 'ApiError';
   }
@@ -23,7 +28,8 @@ export class ApiError extends Error {
 function handleError(err: unknown): never {
   if (err instanceof AxiosError) {
     const message = err.response?.data?.message ?? 'Something went wrong';
-    throw new ApiError(message, err.response?.status ?? 500);
+    const code = err.response?.data?.code;
+    throw new ApiError(message, err.response?.status ?? 500, code);
   }
   throw err;
 }
@@ -57,6 +63,7 @@ export async function registerUser(payload: CreateUserInput) {
 export async function getBrokers(params: {
   search?: string;
   type?: BrokerType | '';
+  status?: BrokerStatus;
   limit?: number;
   skip?: number;
 }) {
@@ -65,6 +72,7 @@ export async function getBrokers(params: {
       params: {
         search: params.search || undefined,
         type: params.type || undefined,
+        status: params.status || undefined,
         limit: params.limit ?? 20,
         skip: params.skip ?? 1,
       },
@@ -96,6 +104,40 @@ export async function createBroker(
     const { data } = await api.post('/broker', payload, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
+
+    return data;
+  } catch (err) {
+    handleError(err);
+  }
+}
+
+export async function updateBroker(
+  id: string,
+  payload: CreateBrokerInput,
+  accessToken: string,
+) {
+  try {
+    const { data } = await api.put(`/broker/${id}`, payload, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    return data;
+  } catch (err) {
+    handleError(err);
+  }
+}
+
+export async function updateBrokerStatus(
+  id: string,
+  status: BrokerStatus,
+  accessToken: string,
+) {
+  try {
+    const { data } = await api.patch(
+      `/broker/${id}/status`,
+      { status },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
 
     return data;
   } catch (err) {

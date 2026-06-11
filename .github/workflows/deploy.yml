@@ -86,6 +86,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_IP_SERVER }} "
             cd $PROD_DIRECTORY &&
 
+            grep '^REDIS_PASSWORD=' .env.prod > .env &&
+
             echo '${{ secrets.GHCR_TOKEN }}' | docker login ghcr.io -u got000 --password-stdin &&
 
             docker compose pull &&

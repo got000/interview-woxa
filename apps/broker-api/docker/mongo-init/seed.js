@@ -1,7 +1,7 @@
 // Seeds the `broker` collection with sample data on first container start
 // (only runs against an empty data volume, per mongo image init behavior).
 
-const SYSTEM_USER_ID = ObjectId('68a359d6c562f9922cfc53f9');
+const SYSTEM_USER_ID = ObjectId('6a2af4207864a4377eba5d81');
 
 const BROKER_TYPES = ['cfd', 'bond', 'stock', 'crypto'];
 const REGIONS = ['Global', 'Asia', 'Europe', 'Americas', 'Middle East', 'Africa', 'Oceania'];
@@ -42,7 +42,7 @@ const docs = BROKERS.map((broker, index) => {
     desc: { th: broker.desc_th, us: broker.desc_us },
     slug,
     broker_type: BROKER_TYPES[index % BROKER_TYPES.length],
-    logo_url: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(broker.name)}`,
+    logo_url: `https://picsum.photos/seed/${slug}/800/600`,
     region: REGIONS[index % REGIONS.length],
     content_detail: {
       title: { th: `เกี่ยวกับ ${broker.name}`, us: `About ${broker.name}` },

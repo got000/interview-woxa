@@ -4,7 +4,7 @@ import { BrokerService } from './broker.service';
 import { Broker } from './schemas/broker.schema';
 import { HelperService } from 'src/common/helper/helper.service';
 import { AggregateCommon } from 'src/common/aggregates/aggregate.common';
-import { BrokerTypeEnum } from 'src/config/constants';
+import { BrokerTypeEnum, StatusEnum } from 'src/config/constants';
 
 const USER_ID = '507f1f77bcf86cd799439011';
 const BROKER_ID = '507f1f77bcf86cd799439012';
@@ -62,14 +62,37 @@ describe('BrokerService', () => {
   });
 
   describe('getBroker', () => {
-    it('returns the broker matching the slug', async () => {
+    it('returns the broker matching the slug for a logged-in user', async () => {
       const broker = { _id: BROKER_ID, slug: 'acme' };
-      brokerModel.findOne.mockResolvedValue(broker);
+      brokerModel.findOne.mockReturnValue(createFindOneResult(broker));
 
-      const response = await service.getBroker('acme');
+      const response = await service.getBroker('acme', true);
 
-      expect(brokerModel.findOne).toHaveBeenCalledWith({ slug: 'acme' });
+      expect(brokerModel.findOne).toHaveBeenCalledWith({
+        slug: 'acme',
+        is_deleted: false,
+      });
       expect(response.result).toBe(broker);
+    });
+
+    it('only returns active brokers for a non-logged-in user', async () => {
+      const broker = { _id: BROKER_ID, slug: 'acme' };
+      brokerModel.findOne.mockReturnValue(createFindOneResult(broker));
+
+      const response = await service.getBroker('acme', false);
+
+      expect(brokerModel.findOne).toHaveBeenCalledWith({
+        slug: 'acme',
+        is_deleted: false,
+        status: StatusEnum.ACTIVE,
+      });
+      expect(response.result).toBe(broker);
+    });
+
+    it('throws BROKER_NOT_FOUND when no broker matches', async () => {
+      brokerModel.findOne.mockReturnValue(createFindOneResult(null));
+
+      await expect(service.getBroker('missing', true)).rejects.toThrow();
     });
   });
 
@@ -193,6 +216,41 @@ describe('BrokerService', () => {
         }),
       );
       expect(response.message).toBe('update broker success');
+    });
+  });
+
+  describe('updateStatus', () => {
+    it('throws BROKER_NOT_FOUND when the broker does not exist', async () => {
+      brokerModel.findOne.mockReturnValueOnce(createFindOneResult(null));
+
+      await expect(
+        service.updateStatus(
+          BROKER_ID,
+          { status: StatusEnum.INACTIVE },
+          USER_ID,
+        ),
+      ).rejects.toThrow();
+      expect(brokerModel.updateOne).not.toHaveBeenCalled();
+    });
+
+    it('updates the broker status', async () => {
+      brokerModel.findOne.mockReturnValueOnce(
+        createFindOneResult({ _id: BROKER_ID, slug: 'acme' }),
+      );
+
+      const response = await service.updateStatus(
+        BROKER_ID,
+        { status: StatusEnum.INACTIVE },
+        USER_ID,
+      );
+
+      expect(brokerModel.updateOne).toHaveBeenCalledWith(
+        expect.objectContaining({ _id: expect.anything() }),
+        expect.objectContaining({
+          $set: expect.objectContaining({ status: StatusEnum.INACTIVE }),
+        }),
+      );
+      expect(response.message).toBe('update broker status success');
     });
   });
 
