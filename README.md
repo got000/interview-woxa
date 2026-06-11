@@ -34,12 +34,24 @@ Monorepo project for the WOXA interview assignment: a broker directory web appli
 - **JWT Authentication** (`@nestjs/jwt`, `@nestjs/passport`, `passport-jwt`)
 - **class-validator / class-transformer** — DTO validation
 - **Swagger** — API documentation
+- **Rate limiting** (`@nestjs/throttler`) — global limit of 60 requests/min per IP, with stricter limits (5/min) on `/login`, `/register`, and `/auth/refresh-token` (10/min) to mitigate brute-force/spam
 
 ### Infrastructure
 
 - **PNPM Workspace** (monorepo)
 - **Docker / Docker Compose**
 - **MongoDB 7** (containerized for local dev, MongoDB Atlas for production)
+
+---
+
+## Frontend Features
+
+- **i18n** — full Thai (`/th`) / English (`/us`) translations via [`lib/i18n/translations.ts`](apps/broker-web/lib/i18n/translations.ts)
+- **Authentication** — login / register backed by NextAuth credentials provider
+- **Broker directory** — searchable, filterable, paginated broker list with detail pages
+- **Broker submission form** — multi-section form with live slug-availability check and field validation
+- **Toast notifications** — global toast system ([`lib/toast/toast-context.tsx`](apps/broker-web/lib/toast/toast-context.tsx) + [`components/toast-container.tsx`](apps/broker-web/components/toast-container.tsx)) surfaces success/error feedback for login, register, and broker submission
+- **Loading / error / empty states** — route-level `loading.tsx` skeletons, `error.tsx` error boundaries with retry, `not-found.tsx` for missing brokers, and an empty-state message + CTA when no brokers match a search
 
 ---
 
@@ -212,6 +224,57 @@ docker compose -f docker-compose-local.yml down -v
 | API | http://localhost:3001/api/v1 |
 | Swagger | http://localhost:3001/swagger |
 | MongoDB | mongodb://localhost:27017/broker_db |
+
+---
+
+## Testing
+
+### API (`apps/broker-api`)
+
+```bash
+# unit tests
+pnpm --filter broker-api test
+
+# unit tests with coverage
+pnpm --filter broker-api test:cov
+
+# e2e tests
+pnpm --filter broker-api test:e2e
+```
+
+Unit tests (58 tests across 10 suites) cover:
+
+- **`AppController` / `AppService`** — login/register delegation, hello endpoint
+- **`BrokerService` / `BrokerController`** — slug uniqueness checks, create/update/delete/restore broker, paginated listing, controller-to-service delegation
+- **`UsersService` / `UsersController`** — get/create/update/delete user, email uniqueness, change password (incl. same-password and not-found cases)
+- **`AuthService` / `AuthController`** — sign-in, credential validation, refresh token (active/inactive/deleted user cases)
+- **`CryptorService`** — password hashing and verification (bcrypt)
+- **`HelperService`** — search regex helper
+
+All Mongoose models, JWT, and cross-service dependencies are mocked.
+
+### Reading the coverage report (`test:cov`)
+
+`test:cov` runs the same 58 tests as `test`, but instruments the code (via Istanbul) to report how much of it actually executes during the test run. The summary table has these columns:
+
+| Column | Meaning |
+| --- | --- |
+| `% Stmts` | % of statements (lines of executable code) that ran |
+| `% Branch` | % of conditional branches (`if`/`else`, ternaries, `&&`/`\|\|`, `switch`) where **both** outcomes were exercised |
+| `% Funcs` | % of functions/methods called at least once |
+| `% Lines` | % of source lines executed (similar to `% Stmts`) |
+| `Uncovered Line #s` | Specific line numbers never hit by any test |
+
+A full HTML report is generated at `apps/broker-api/coverage/lcov-report/index.html` — open it in a browser for a file-by-file, line-by-line view (covered lines highlighted green, uncovered red).
+
+Notes on the current results:
+
+- Core business logic (`broker.service.ts`, `users.service.ts`, `auth.service.ts`) is well covered.
+- `*.module.ts` and `main.ts` show 0% — these are dependency-injection wiring/bootstrap files with no logic to test.
+- `auth.guard.ts`, `local.guard.ts`, `local.strategy.ts` show low/no coverage — these are passport guards/strategies tied to the HTTP request lifecycle, normally exercised by e2e tests rather than unit tests.
+- `broker.service.ts` is missing coverage for `updateSlug()` (lines 219-243) — a good candidate for an additional unit test.
+
+Coverage is a tool for spotting untested code paths, not a hard pass/fail gate.
 
 ---
 

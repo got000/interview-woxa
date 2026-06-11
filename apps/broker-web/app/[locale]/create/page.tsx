@@ -1,8 +1,20 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { BrokerForm } from '@/components/broker-form';
 import { resolveLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/translations';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const dict = getDictionary(locale);
+
+  return { title: dict.create.title };
+}
 
 export default async function CreateBrokerPage({
   params,

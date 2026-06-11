@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
+import { BrokerTypeEnum } from './../src/config/constants';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -16,10 +17,19 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it('/broker/broker-type (GET) returns the available broker types', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/broker/broker-type')
+      .expect(200);
+
+    expect(response.body.result).toEqual(Object.values(BrokerTypeEnum));
+  });
+
+  it('/users (GET) requires authentication', () => {
+    return request(app.getHttpServer()).get('/users').expect(401);
   });
 });

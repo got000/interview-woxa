@@ -43,8 +43,9 @@ export async function generateMetadata({
   const broker = await getBrokerBySlug(slug);
 
   if (!broker) {
+    const dict = getDictionary(locale);
     return {
-      title: 'Broker not found',
+      title: dict.common.notFoundTitle,
     };
   }
 

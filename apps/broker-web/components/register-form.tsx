@@ -6,11 +6,13 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { registerAction } from '@/lib/actions';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { useToast } from '@/lib/toast/toast-context';
 import { isValidEmail } from '@/lib/validation';
 
 export function RegisterForm() {
   const router = useRouter();
   const { locale, dict } = useLocale();
+  const { showToast } = useToast();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,8 +45,11 @@ export function RegisterForm() {
 
     if (!result.success) {
       setError(result.message);
+      showToast('error', result.message);
       return;
     }
+
+    showToast('success', dict.toast.registerSuccess);
 
     const signInResult = await signIn('credentials', {
       email,

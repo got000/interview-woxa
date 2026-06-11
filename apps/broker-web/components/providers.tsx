@@ -3,6 +3,8 @@
 import { SessionProvider } from 'next-auth/react';
 import { Locale } from '@/lib/i18n/config';
 import { LocaleProvider } from '@/lib/i18n/locale-context';
+import { ToastProvider } from '@/lib/toast/toast-context';
+import { ToastContainer } from '@/components/toast-container';
 
 export function Providers({
   locale,
@@ -13,7 +15,12 @@ export function Providers({
 }) {
   return (
     <SessionProvider>
-      <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
+      <LocaleProvider initialLocale={locale}>
+        <ToastProvider>
+          {children}
+          <ToastContainer />
+        </ToastProvider>
+      </LocaleProvider>
     </SessionProvider>
   );
 }

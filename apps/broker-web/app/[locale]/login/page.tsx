@@ -1,8 +1,20 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LoginForm } from '@/components/login-form';
 import { resolveLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/translations';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const dict = getDictionary(locale);
+
+  return { title: dict.login.title };
+}
 
 export default async function LoginPage({
   params,
