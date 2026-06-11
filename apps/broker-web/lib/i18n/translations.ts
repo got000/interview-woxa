@@ -20,6 +20,8 @@ export const translations = {
       riskDisclosure: 'Risk Disclosure',
       contact: 'Contact',
       copyright: '© 2024 Sterling Midnight. All rights reserved.',
+      demoNotice:
+        'Demo Project / Interview Assignment — This website is a demonstration project for technical assessment only. No real financial or brokerage service is provided.',
     },
     home: {
       title: 'Institutional Brokers',
@@ -175,6 +177,8 @@ export const translations = {
       riskDisclosure: 'การเปิดเผยความเสี่ยง',
       contact: 'ติดต่อเรา',
       copyright: '© 2024 Sterling Midnight. สงวนลิขสิทธิ์',
+      demoNotice:
+        'โปรเจกต์สาธิต / งานทดสอบสัมภาษณ์ — เว็บไซต์นี้จัดทำขึ้นเพื่อการประเมินทางเทคนิคเท่านั้น ไม่ได้ให้บริการทางการเงินหรือนายหน้าจริง',
     },
     home: {
       title: 'โบรกเกอร์ระดับสถาบัน',
