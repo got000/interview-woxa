@@ -24,7 +24,7 @@ export const translations = {
         'Demo Project / Interview Assignment — This website is a demonstration project for technical assessment only. No real financial or brokerage service is provided.',
     },
     home: {
-      title: 'Institutional Brokers',
+      title: 'Demo Project — Institutional Brokers',
       description:
         'Access global liquidity through our curated network of elite financial institutions and market makers.',
       searchPlaceholder: 'Find brokers by name, region, or asset class...',
@@ -181,7 +181,7 @@ export const translations = {
         'โปรเจกต์สาธิต / งานทดสอบสัมภาษณ์ — เว็บไซต์นี้จัดทำขึ้นเพื่อการประเมินทางเทคนิคเท่านั้น ไม่ได้ให้บริการทางการเงินหรือนายหน้าจริง',
     },
     home: {
-      title: 'โบรกเกอร์ระดับสถาบัน',
+      title: 'โปรเจกต์สาธิต — โบรกเกอร์ระดับสถาบัน',
       description:
         'เข้าถึงสภาพคล่องระดับโลกผ่านเครือข่ายสถาบันการเงินและผู้ดูแลตลาดชั้นนำที่คัดสรรมาแล้ว',
       searchPlaceholder: 'ค้นหาโบรกเกอร์ตามชื่อ ภูมิภาค หรือประเภทสินทรัพย์...',
