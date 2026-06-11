@@ -4,6 +4,7 @@ import { AggregatesModule } from './aggregates/aggregates.module';
 import { CryptorModule } from './cryptor/cryptor.module';
 import { EnvironmentsModule } from './environments/environments.module';
 import { LoggerModule } from './logger/logger.module';
+import { HelperModule } from './helper/helper.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { LoggerModule } from './logger/logger.module';
     CryptorModule,
     EnvironmentsModule,
     LoggerModule,
+    HelperModule,
   ],
   exports: [
     DatabaseModule,
@@ -19,6 +21,7 @@ import { LoggerModule } from './logger/logger.module';
     CryptorModule,
     EnvironmentsModule,
     LoggerModule,
+    HelperModule,
   ],
 })
 export class CommonModule {}

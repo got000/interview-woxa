@@ -10,7 +10,7 @@ export default (): IEnvConfig => ({
   },
   jwt: {
     JWT_EXPIRATION: ENV.JWT_EXPIRATION ?? '',
-    JWT_SECRET_KEY: ENV.JWT_SECRET_KEY ?? '',
+    JWT_SECRET: ENV.JWT_SECRET ?? '',
     JWT_EXPIRES_IN: ENV.JWT_EXPIRES_IN ?? '',
   },
   mongodb: {

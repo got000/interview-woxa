@@ -67,4 +67,19 @@ export const ERROR_MESSAGES = {
     message: 'เข้าสู่ระบบล้มเหลว',
     status_code: HttpStatusCode.Unauthorized,
   },
+  ROLE_PERMISSION_DENIED: {
+    code: 'ROLE_PERMISSION_DENIED',
+    message: 'คุณไม่มีสิทธิ์ตามบทบาทในการทำรายการนี้',
+    status_code: HttpStatusCode.Forbidden,
+  },
+  SLUG_ALREADY_EXISTS: {
+    code: 'SLUG_ALREADY_EXISTS',
+    message: 'slug ซ้ำในระบบ',
+    status_code: HttpStatusCode.BadRequest,
+  },
+  BROKER_NOT_FOUND: {
+    code: 'BROKER_NOT_FOUND',
+    message: 'ไม่พบข้อมูล broker',
+    status_code: HttpStatusCode.NotFound,
+  },
 };
