@@ -1,32 +1,45 @@
 services:
-  api:
-    image: broker-api
-    container_name: broker-api
+  mongo:
+    image: mongo:7
+    container_name: broker-mongo-local
     restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_DATABASE=broker_db
+    volumes:
+      - mongo_data:/data/db
+      - ./apps/broker-api/docker/mongo-init:/docker-entrypoint-initdb.d:ro
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/broker-api/Dockerfile
+    image: broker-api:local
+    container_name: broker-api-local
     ports:
       - '3001:3001'
     env_file:
-      - .env
+      - apps/broker-api/.env
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/broker_db
     depends_on:
       - mongo
 
   web:
-    image: broker-web
-    container_name: broker-web
-    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: apps/broker-web/Dockerfile
+    image: broker-web:local
+    container_name: broker-web-local
     ports:
       - '3000:3000'
     env_file:
-      - .env
+      - apps/broker-web/.env.local
+    environment:
+      - API_URL=http://api:3001/api/v1
     depends_on:
       - api
-
-  mongo:
-    image: mongo:7
-    container_name: broker-mongo
-    restart: unless-stopped
-    volumes:
-      - mongo_data:/data/db
 
 volumes:
   mongo_data:

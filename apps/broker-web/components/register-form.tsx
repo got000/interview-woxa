@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 import { registerAction } from '@/lib/actions';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { isValidEmail } from '@/lib/validation';
 
 export function RegisterForm() {
   const router = useRouter();
@@ -17,9 +19,17 @@ export function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const emailValid = email === '' || isValidEmail(email);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!isValidEmail(email)) {
+      setError(dict.register.invalidEmail);
+      return;
+    }
+
     setLoading(true);
 
     const result = await registerAction({
@@ -36,13 +46,28 @@ export function RegisterForm() {
       return;
     }
 
-    router.push(`/${locale}/login`);
+    const signInResult = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (signInResult?.error) {
+      router.push(`/${locale}/login`);
+      return;
+    }
+
+    router.push(`/${locale}/create`);
+    router.refresh();
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <label htmlFor="full_name" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <label
+          htmlFor="full_name"
+          className="text-xs font-semibold uppercase tracking-wider text-slate-400"
+        >
           {dict.register.fullName}
         </label>
         <input
@@ -57,7 +82,10 @@ export function RegisterForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <label
+          htmlFor="email"
+          className="text-xs font-semibold uppercase tracking-wider text-slate-400"
+        >
           {dict.register.email}
         </label>
         <input
@@ -67,13 +95,22 @@ export function RegisterForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={dict.register.emailPlaceholder}
+          aria-invalid={!emailValid}
           className="w-full rounded border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:border-sky-400 focus:outline-none"
         />
+        {!emailValid && (
+          <span className="text-xs text-red-400">
+            {dict.register.invalidEmail}
+          </span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <label
+            htmlFor="password"
+            className="text-xs font-semibold uppercase tracking-wider text-slate-400"
+          >
             {dict.register.password}
           </label>
           <input
@@ -87,7 +124,10 @@ export function RegisterForm() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="confirm_password" className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <label
+            htmlFor="confirm_password"
+            className="text-xs font-semibold uppercase tracking-wider text-slate-400"
+          >
             {dict.register.confirmPassword}
           </label>
           <input
@@ -101,7 +141,10 @@ export function RegisterForm() {
         </div>
       </div>
 
-      <label htmlFor="agreement" className="flex items-start gap-3 text-sm text-slate-300">
+      <label
+        htmlFor="agreement"
+        className="flex items-start gap-3 text-sm text-slate-300"
+      >
         <input
           id="agreement"
           type="checkbox"

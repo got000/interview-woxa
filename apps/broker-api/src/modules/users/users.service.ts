@@ -232,18 +232,4 @@ export class UsersService {
 
     return successResponse({ message: `change password user success` });
   }
-
-  validateAndFormatPhonNumber(phoneNumber: string) {
-    const startZero = phoneNumber.startsWith('0');
-    let phone_number = phoneNumber;
-    if (startZero) {
-      phone_number = phoneNumber.slice(1);
-    }
-
-    if (startZero && phone_number.length !== 9) {
-      throwHttpException(ERROR_MESSAGES.PHONE_NUMBER_IVALID_FORMAT);
-    }
-
-    return phoneNumber;
-  }
 }

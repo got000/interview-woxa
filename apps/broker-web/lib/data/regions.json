@@ -1,0 +1,9 @@
+[
+  { "code": "Global", "flag": "🌍", "name": { "us": "Global", "th": "ทั่วโลก" } },
+  { "code": "Asia", "flag": "🌏", "name": { "us": "Asia", "th": "เอเชีย" } },
+  { "code": "Europe", "flag": "🇪🇺", "name": { "us": "Europe", "th": "ยุโรป" } },
+  { "code": "Americas", "flag": "🌎", "name": { "us": "Americas", "th": "อเมริกา" } },
+  { "code": "Middle East", "flag": "🇦🇪", "name": { "us": "Middle East", "th": "ตะวันออกกลาง" } },
+  { "code": "Africa", "flag": "🌍", "name": { "us": "Africa", "th": "แอฟริกา" } },
+  { "code": "Oceania", "flag": "🇦🇺", "name": { "us": "Oceania", "th": "โอเชียเนีย" } }
+]

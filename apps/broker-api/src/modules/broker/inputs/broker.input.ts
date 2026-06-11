@@ -1,12 +1,10 @@
 import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
-  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUrl,
   Matches,
   ValidateNested,
 } from 'class-validator';
@@ -14,6 +12,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { BrokerTypeEnum } from './../../../config/constants';
 import { DefaultInput, LangInput } from './../../../config/dto';
+import {
+  IsEmailField,
+  IsUrlField,
+} from './../../../config/decorators/validation.decorator';
 
 export class ContentsInput {
   @ApiProperty({
@@ -41,21 +43,15 @@ export class ContactDetailInput {
   @IsNotEmpty()
   address: string;
 
-  @ApiProperty({
+  @IsEmailField({
     example: 'support@broker.com',
-    required: true,
   })
-  @IsEmail()
-  @IsNotEmpty()
-  @IsString()
+  @Transform(({ value }) => value?.trim().toLowerCase())
   email: string;
 
-  @ApiProperty({
+  @IsUrlField({
     example: 'https://broker.com',
   })
-  @IsString()
-  @IsNotEmpty()
-  @IsUrl({ require_protocol: true })
   web_site: string;
 }
 
@@ -98,12 +94,9 @@ export class CreateBrokerInput {
   })
   broker_type: BrokerTypeEnum;
 
-  @ApiProperty({
+  @IsUrlField({
     example: 'https://cdn.example.com/logo.png',
   })
-  @IsString()
-  @IsNotEmpty()
-  @IsUrl({ require_protocol: true })
   logo_url: string;
 
   @ApiProperty({

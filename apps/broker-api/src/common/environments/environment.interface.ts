@@ -8,6 +8,7 @@ export interface IAppEnv {
   APP_PORT: number;
   APP_PREFIX: string;
   APP_FRONTEND_URL: string;
+  APP_NODE_ENV: string;
 }
 
 export interface IJwtEnv {

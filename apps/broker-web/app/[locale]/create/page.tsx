@@ -20,8 +20,12 @@ export default async function CreateBrokerPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">{dict.create.title}</h1>
-      <BrokerForm />
+      <h1 className="font-serif text-4xl font-bold text-slate-100">{dict.create.title}</h1>
+      <p className="mt-3 max-w-2xl text-sm text-slate-400">{dict.create.description}</p>
+
+      <div className="mt-8 rounded-lg border border-slate-800 bg-slate-900 p-6 sm:p-8">
+        <BrokerForm />
+      </div>
     </div>
   );
 }
