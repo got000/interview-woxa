@@ -30,6 +30,10 @@ export function Footer() {
 
         <span className="text-xs text-slate-500">{dict.footer.copyright}</span>
       </div>
+
+      <div className="mx-auto max-w-8xl px-10 pb-3 text-center text-[11px] leading-relaxed text-slate-600">
+        {dict.footer.demoNotice}
+      </div>
     </footer>
   );
 }
