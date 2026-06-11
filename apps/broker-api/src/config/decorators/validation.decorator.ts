@@ -1,6 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+
+export function ToLowerCase() {
+  return Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.trim().toLowerCase() : value,
+  );
+}
 
 type IsUrlOptions = NonNullable<Parameters<typeof IsUrl>[0]>;
 

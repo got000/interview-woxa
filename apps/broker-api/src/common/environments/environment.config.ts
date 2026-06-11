@@ -17,4 +17,9 @@ export default (): IEnvConfig => ({
   mongodb: {
     MONGO_URL: ENV.MONGO_URL ?? '',
   },
+  cache: {
+    REDIS_URL: ENV.REDIS_URL ?? 'redis://localhost:6379',
+    REDIS_PREFIX: ENV.REDIS_PREFIX ?? 'broker_api:',
+    REDIS_PASSWORD: ENV.REDIS_PASSWORD ?? '',
+  },
 });

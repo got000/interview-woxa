@@ -2,6 +2,7 @@ export interface IEnvConfig {
   app: IAppEnv;
   jwt: IJwtEnv;
   mongodb: IMongoEnv;
+  cache: ICacheEnv;
 }
 
 export interface IAppEnv {
@@ -19,4 +20,10 @@ export interface IJwtEnv {
 
 export interface IMongoEnv {
   MONGO_URL: string;
+}
+
+export interface ICacheEnv {
+  REDIS_URL: string;
+  REDIS_PREFIX: string;
+  REDIS_PASSWORD: string;
 }

@@ -10,16 +10,18 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { BrokerTypeEnum } from './../../../config/constants';
+import { BrokerTypeEnum, StatusEnum } from './../../../config/constants';
 import { DefaultInput, LangInput } from './../../../config/dto';
 import {
   IsEmailField,
   IsUrlField,
+  ToLowerCase,
 } from './../../../config/decorators/validation.decorator';
 
 export class ContentsInput {
   @ApiProperty({
     type: LangInput,
+    example: { th: 'รายละเอียดโบรกเกอร์', us: 'Broker overview' },
   })
   @ValidateNested()
   @Type(() => LangInput)
@@ -27,6 +29,12 @@ export class ContentsInput {
 
   @ApiProperty({
     type: [LangInput],
+    example: [
+      {
+        th: 'เนื้อหารายละเอียดโบรกเกอร์',
+        us: 'Broker detail content',
+      },
+    ],
   })
   @IsArray()
   @ValidateNested({ each: true })
@@ -46,7 +54,7 @@ export class ContactDetailInput {
   @IsEmailField({
     example: 'support@broker.com',
   })
-  @Transform(({ value }) => value?.trim().toLowerCase())
+  @ToLowerCase()
   email: string;
 
   @IsUrlField({
@@ -59,6 +67,7 @@ export class CreateBrokerInput {
   @ApiProperty({
     type: LangInput,
     required: true,
+    example: { th: 'โบรกเกอร์ตัวอย่าง', us: 'Sample Broker' },
   })
   @ValidateNested()
   @Type(() => LangInput)
@@ -67,6 +76,10 @@ export class CreateBrokerInput {
   @ApiProperty({
     type: LangInput,
     required: true,
+    example: {
+      th: 'คำอธิบายโบรกเกอร์ตัวอย่าง',
+      us: 'Sample broker description',
+    },
   })
   @ValidateNested()
   @Type(() => LangInput)
@@ -104,6 +117,7 @@ export class CreateBrokerInput {
   })
   @IsString()
   @IsNotEmpty()
+  @ToLowerCase()
   region: string;
 
   @ApiProperty({
@@ -129,6 +143,17 @@ export class GetBrokerInput extends DefaultInput {
     required: false,
   })
   type?: string;
+
+  @IsOptional()
+  @IsEnum(StatusEnum, {
+    message: `status must be one of: ${Object.values(StatusEnum).join(', ')}`,
+  })
+  @ApiProperty({
+    enum: StatusEnum,
+    example: StatusEnum.ACTIVE,
+    required: false,
+  })
+  status?: StatusEnum;
 }
 
 export class UpdateSlugInput {
@@ -138,5 +163,18 @@ export class UpdateSlugInput {
   })
   @IsNotEmpty()
   @IsString()
+  @ToLowerCase()
   slug: string;
+}
+
+export class UpdateBrokerStatusInput {
+  @ApiProperty({
+    enum: StatusEnum,
+    example: StatusEnum.INACTIVE,
+    required: true,
+  })
+  @IsEnum(StatusEnum, {
+    message: `status must be one of: ${Object.values(StatusEnum).join(', ')}`,
+  })
+  status: StatusEnum;
 }

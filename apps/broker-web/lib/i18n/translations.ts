@@ -46,6 +46,16 @@ export const translations = {
       partnerDescription:
         'Are you an institutional broker? Join our exclusive network of providers.',
       inquireNow: 'Inquire Now',
+      edit: 'Edit',
+      enable: 'Enable',
+      disable: 'Disable',
+      confirmDisableTitle: 'Disable broker',
+      confirmDisableMessage:
+        'Are you sure you want to disable this broker? It will no longer be visible to visitors.',
+      confirmEnableTitle: 'Enable broker',
+      confirmEnableMessage: 'Are you sure you want to enable this broker again?',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
     },
     login: {
       title: 'Login',
@@ -133,6 +143,9 @@ export const translations = {
       invalidUrl:
         'Please enter a valid URL (starting with http:// or https://)',
       invalidEmail: 'Please enter a valid email address',
+      editTitle: 'Edit Broker',
+      save: 'Save Changes',
+      saving: 'Saving...',
     },
     detail: {
       slug: 'Slug',
@@ -170,6 +183,8 @@ export const translations = {
       loginSuccess: 'Logged in successfully',
       registerSuccess: 'Account created successfully',
       brokerCreateSuccess: 'Broker submitted successfully',
+      brokerUpdateSuccess: 'Broker updated successfully',
+      brokerStatusUpdateSuccess: 'Broker status updated successfully',
       genericError: 'Something went wrong, please try again',
     },
   },
@@ -218,6 +233,16 @@ export const translations = {
       partnerDescription:
         'คุณเป็นโบรกเกอร์สถาบันใช่ไหม? เข้าร่วมเครือข่ายผู้ให้บริการของเรา',
       inquireNow: 'สอบถามเพิ่มเติม',
+      edit: 'แก้ไข',
+      enable: 'เปิดใช้งาน',
+      disable: 'ปิดใช้งาน',
+      confirmDisableTitle: 'ปิดใช้งานโบรกเกอร์',
+      confirmDisableMessage:
+        'คุณแน่ใจหรือไม่ว่าต้องการปิดใช้งานโบรกเกอร์นี้? ผู้เข้าชมจะไม่เห็นรายการนี้อีก',
+      confirmEnableTitle: 'เปิดใช้งานโบรกเกอร์',
+      confirmEnableMessage: 'คุณแน่ใจหรือไม่ว่าต้องการเปิดใช้งานโบรกเกอร์นี้อีกครั้ง?',
+      confirm: 'ยืนยัน',
+      cancel: 'ยกเลิก',
     },
     login: {
       title: 'เข้าสู่ระบบ',
@@ -304,6 +329,9 @@ export const translations = {
       invalidUrl:
         'กรุณากรอก URL ให้ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)',
       invalidEmail: 'กรุณากรอกอีเมลให้ถูกต้อง',
+      editTitle: 'แก้ไขโบรกเกอร์',
+      save: 'บันทึกการแก้ไข',
+      saving: 'กำลังบันทึก...',
     },
     detail: {
       slug: 'Slug',
@@ -341,6 +369,8 @@ export const translations = {
       loginSuccess: 'เข้าสู่ระบบสำเร็จ',
       registerSuccess: 'สมัครสมาชิกสำเร็จ',
       brokerCreateSuccess: 'ส่งข้อมูลโบรกเกอร์สำเร็จ',
+      brokerUpdateSuccess: 'แก้ไขข้อมูลโบรกเกอร์สำเร็จ',
+      brokerStatusUpdateSuccess: 'อัปเดตสถานะโบรกเกอร์สำเร็จ',
       genericError: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
     },
   },

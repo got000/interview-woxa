@@ -5,13 +5,18 @@ import { Model } from 'mongoose';
 import {
   CreateBrokerInput,
   GetBrokerInput,
+  UpdateBrokerStatusInput,
   UpdateSlugInput,
 } from './inputs/broker.input';
 import { HelperService } from 'src/common/helper/helper.service';
 import { AggregateCommon } from 'src/common/aggregates/aggregate.common';
 import { throwHttpException } from 'src/config/filters/http-error.exception.filter';
 import { successResponse } from 'src/config/filters/http-success.response';
-import { BrokerTypeEnum, ERROR_MESSAGES } from 'src/config/constants';
+import {
+  BrokerTypeEnum,
+  ERROR_MESSAGES,
+  StatusEnum,
+} from 'src/config/constants';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
@@ -31,8 +36,15 @@ export class BrokerService {
     });
   }
 
-  async getBroker(slug: string) {
-    const result = await this.brokerModel.findOne({ slug });
+  async getBroker(slug: string, isLoggedIn: boolean) {
+    const result = await this.brokerModel
+      .findOne({
+        slug,
+        is_deleted: false,
+        ...(!isLoggedIn && { status: StatusEnum.ACTIVE }),
+      })
+      .orFail(() => throwHttpException(ERROR_MESSAGES.BROKER_NOT_FOUND));
+
     return successResponse({
       message: `get broker successfuly`,
       result,
@@ -40,12 +52,13 @@ export class BrokerService {
   }
 
   async getBrokers(query: GetBrokerInput) {
-    const { limit, skip, type } = query;
+    const { limit, skip, type, status } = query;
     const search = this.helperService.getSearchRegExp(query?.search ?? '');
 
     const match: any = {
       is_deleted: false,
       ...(type && { broker_type: type }),
+      ...(status && { status }),
       ...(search && {
         $or: [
           { broker_type: search },
@@ -241,6 +254,29 @@ export class BrokerService {
     );
 
     return successResponse({ message: `update slug success` });
+  }
+
+  async updateStatus(
+    brokerId: string,
+    payload: UpdateBrokerStatusInput,
+    userId: string,
+  ) {
+    await this.brokerModel
+      .findOne({ _id: new ObjectId(brokerId) })
+      .orFail(() => throwHttpException(ERROR_MESSAGES.BROKER_NOT_FOUND));
+
+    await this.brokerModel.updateOne(
+      { _id: new ObjectId(brokerId) },
+      {
+        $set: {
+          status: payload.status,
+          updated_at: new Date(),
+          updated_by: new ObjectId(userId),
+        },
+      },
+    );
+
+    return successResponse({ message: `update broker status success` });
   }
 
   async checkExitsSlug(slug: string, brokerId?: string) {
