@@ -1,7 +1,7 @@
-export type Locale = 'en' | 'th';
+export type Locale = 'us' | 'th';
 
-export const LOCALES: Locale[] = ['en', 'th'];
-export const DEFAULT_LOCALE: Locale = 'en';
+export const LOCALES: Locale[] = ['us', 'th'];
+export const DEFAULT_LOCALE: Locale = 'us';
 export const LOCALE_COOKIE = 'locale';
 
 export function isLocale(value: string | undefined): value is Locale {

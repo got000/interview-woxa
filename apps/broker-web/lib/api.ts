@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import {
   Broker,
   BrokerType,
@@ -6,7 +7,11 @@ import {
   PaginatedResponse,
 } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+const API_URL = process.env.API_URL ?? 'http://localhost:3001/api/v1';
+
+const api = axios.create({
+  baseURL: API_URL,
+});
 
 export class ApiError extends Error {
   constructor(message: string, public statusCode: number) {
@@ -15,44 +20,38 @@ export class ApiError extends Error {
   }
 }
 
-async function parseResponse<T>(res: Response): Promise<T> {
-  const data = await res.json().catch(() => null);
-
-  if (!res.ok) {
-    const message = data?.message ?? 'Something went wrong';
-    throw new ApiError(message, res.status);
+function handleError(err: unknown): never {
+  if (err instanceof AxiosError) {
+    const message = err.response?.data?.message ?? 'Something went wrong';
+    throw new ApiError(message, err.response?.status ?? 500);
   }
-
-  return data as T;
+  throw err;
 }
 
 export async function loginUser(username: string, password: string) {
-  const res = await fetch(`${API_URL}/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-    cache: 'no-store',
-  });
+  try {
+    const { data } = await api.post<{
+      access_token: string;
+      _id: string;
+      email: string;
+      full_name: string;
+      status: string;
+      is_deleted: boolean;
+    }>('/login', { username, password });
 
-  return parseResponse<{
-    access_token: string;
-    _id: string;
-    email: string;
-    full_name: string;
-    status: string;
-    is_deleted: boolean;
-  }>(res);
+    return data;
+  } catch (err) {
+    handleError(err);
+  }
 }
 
 export async function registerUser(payload: CreateUserInput) {
-  const res = await fetch(`${API_URL}/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    cache: 'no-store',
-  });
-
-  return parseResponse(res);
+  try {
+    const { data } = await api.post('/register', payload);
+    return data;
+  } catch (err) {
+    handleError(err);
+  }
 }
 
 export async function getBrokers(params: {
@@ -61,41 +60,45 @@ export async function getBrokers(params: {
   limit?: number;
   skip?: number;
 }) {
-  const query = new URLSearchParams();
-  if (params.search) query.set('search', params.search);
-  if (params.type) query.set('type', params.type);
-  query.set('limit', String(params.limit ?? 20));
-  query.set('skip', String(params.skip ?? 1));
+  try {
+    const { data } = await api.get<PaginatedResponse<Broker>>('/broker', {
+      params: {
+        search: params.search || undefined,
+        type: params.type || undefined,
+        limit: params.limit ?? 20,
+        skip: params.skip ?? 1,
+      },
+    });
 
-  const res = await fetch(`${API_URL}/broker?${query.toString()}`, {
-    cache: 'no-store',
-  });
-
-  return parseResponse<PaginatedResponse<Broker>>(res);
+    return data;
+  } catch (err) {
+    handleError(err);
+  }
 }
 
 export async function getBrokerBySlug(slug: string): Promise<Broker | null> {
-  const res = await fetch(`${API_URL}/broker?limit=1000&skip=1`, {
-    cache: 'no-store',
-  });
-
-  const data = await parseResponse<PaginatedResponse<Broker>>(res);
-  return data.result?.find((broker) => broker.slug === slug) ?? null;
+  try {
+    const { data } = await api.get<{ result: Broker | null }>(`/broker/${slug}`);
+    return data.result ?? null;
+  } catch (err) {
+    if (err instanceof AxiosError && err.response?.status === 404) {
+      return null;
+    }
+    handleError(err);
+  }
 }
 
 export async function createBroker(
   payload: CreateBrokerInput,
   accessToken: string,
 ) {
-  const res = await fetch(`${API_URL}/broker`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(payload),
-    cache: 'no-store',
-  });
+  try {
+    const { data } = await api.post('/broker', payload, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
-  return parseResponse(res);
+    return data;
+  } catch (err) {
+    handleError(err);
+  }
 }

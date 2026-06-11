@@ -8,7 +8,7 @@ export function Footer() {
 
   return (
     <footer className="bg-slate-950">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-6 text-sm">
+      <div className="mx-auto flex max-w-8xl flex-wrap items-center justify-between gap-4 px-10 py-3 text-xl">
         <Link href={`/${locale}`} className="text-base font-bold text-sky-300">
           Woxa
         </Link>

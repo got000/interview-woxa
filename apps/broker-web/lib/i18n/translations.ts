@@ -1,7 +1,7 @@
 import { Locale } from './config';
 
 export const translations = {
-  en: {
+  us: {
     nav: {
       home: 'Home',
       brokerList: 'Broker List',
@@ -23,7 +23,8 @@ export const translations = {
     },
     home: {
       title: 'Institutional Brokers',
-      description: 'Access global liquidity through our curated network of elite financial institutions and market makers.',
+      description:
+        'Access global liquidity through our curated network of elite financial institutions and market makers.',
       searchPlaceholder: 'Find brokers by name, region, or asset class...',
       assetFocus: 'Asset focus:',
       allTypes: 'All Partners',
@@ -31,7 +32,8 @@ export const translations = {
       noBrokers: 'No brokers found.',
       viewDetails: 'View Details',
       partnerTitle: 'Partner with Us',
-      partnerDescription: 'Are you an institutional broker? Join our exclusive network of providers.',
+      partnerDescription:
+        'Are you an institutional broker? Join our exclusive network of providers.',
       inquireNow: 'Inquire Now',
     },
     login: {
@@ -39,7 +41,8 @@ export const translations = {
       brandName: 'Sterling Midnight',
       brandSubtitle: 'Institutional Terminal',
       heading: 'Secure Verification',
-      description: 'Access the Sovereign Ledger with your verified credentials.',
+      description:
+        'Access the Sovereign Ledger with your verified credentials.',
       emailLabel: 'Institutional Email',
       emailPlaceholder: 'user@institution.domain',
       passwordLabel: 'Security Password',
@@ -56,14 +59,16 @@ export const translations = {
       title: 'Register',
       brandLabel: 'Sovereign Ledger',
       heading: 'Institutional Onboarding',
-      description: 'Complete your verification credentials to access the terminal.',
+      description:
+        'Complete your verification credentials to access the terminal.',
       fullName: 'Full Name',
       fullNamePlaceholder: 'Alexander Sterling',
       email: 'Institutional Email',
       emailPlaceholder: 'verification@reserve.int',
       password: 'Security Password',
       confirmPassword: 'Confirm Password',
-      agreementPrefix: 'I acknowledge that I am authorized to represent this entity and agree to the',
+      agreementPrefix:
+        'I acknowledge that I am authorized to represent this entity and agree to the',
       agreementMsa: 'Institutional Master Service Agreement',
       agreementAnd: 'and',
       agreementPrivacy: 'Privacy Protocols',
@@ -81,10 +86,13 @@ export const translations = {
       statCapitalLabel: 'Managed Capital',
       statUptimeValue: '99.9%',
       statUptimeLabel: 'Uptime SLA',
+      invalidEmail: 'Please enter a valid email address',
     },
     create: {
-      title: 'Create broker',
-      basicInfo: 'Basic info',
+      title: 'Submit Broker',
+      description:
+        'Register a new institutional entity within the Sterling Midnight ecosystem. Please ensure all data points align with regulatory documentation.',
+      basicInfo: 'General info',
       nameTh: 'Name (TH)',
       nameEn: 'Name (EN)',
       descTh: 'Description (TH)',
@@ -105,12 +113,15 @@ export const translations = {
       address: 'Address',
       email: 'Email',
       website: 'Website',
-      submit: 'Create broker',
+      cancel: 'Discard Draft',
+      submit: 'Submit Application',
       submitting: 'Submitting...',
       slugChecking: 'Checking slug availability...',
       slugTaken: 'This slug is already in use',
       slugAvailable: 'Slug is available',
-      invalidUrl: 'Please enter a valid URL (starting with http:// or https://)',
+      invalidUrl:
+        'Please enter a valid URL (starting with http:// or https://)',
+      invalidEmail: 'Please enter a valid email address',
     },
     detail: {
       slug: 'Slug',
@@ -167,7 +178,8 @@ export const translations = {
     },
     home: {
       title: 'โบรกเกอร์ระดับสถาบัน',
-      description: 'เข้าถึงสภาพคล่องระดับโลกผ่านเครือข่ายสถาบันการเงินและผู้ดูแลตลาดชั้นนำที่คัดสรรมาแล้ว',
+      description:
+        'เข้าถึงสภาพคล่องระดับโลกผ่านเครือข่ายสถาบันการเงินและผู้ดูแลตลาดชั้นนำที่คัดสรรมาแล้ว',
       searchPlaceholder: 'ค้นหาโบรกเกอร์ตามชื่อ ภูมิภาค หรือประเภทสินทรัพย์...',
       assetFocus: 'ประเภทสินทรัพย์:',
       allTypes: 'พันธมิตรทั้งหมด',
@@ -175,7 +187,8 @@ export const translations = {
       noBrokers: 'ไม่พบโบรกเกอร์',
       viewDetails: 'ดูรายละเอียด',
       partnerTitle: 'เป็นพันธมิตรกับเรา',
-      partnerDescription: 'คุณเป็นโบรกเกอร์สถาบันใช่ไหม? เข้าร่วมเครือข่ายผู้ให้บริการของเรา',
+      partnerDescription:
+        'คุณเป็นโบรกเกอร์สถาบันใช่ไหม? เข้าร่วมเครือข่ายผู้ให้บริการของเรา',
       inquireNow: 'สอบถามเพิ่มเติม',
     },
     login: {
@@ -183,7 +196,8 @@ export const translations = {
       brandName: 'Sterling Midnight',
       brandSubtitle: 'Institutional Terminal',
       heading: 'ยืนยันตัวตนแบบปลอดภัย',
-      description: 'เข้าถึง Sovereign Ledger ด้วยข้อมูลรับรองที่ยืนยันแล้วของคุณ',
+      description:
+        'เข้าถึง Sovereign Ledger ด้วยข้อมูลรับรองที่ยืนยันแล้วของคุณ',
       emailLabel: 'อีเมลสถาบัน',
       emailPlaceholder: 'user@institution.domain',
       passwordLabel: 'รหัสผ่านความปลอดภัย',
@@ -207,7 +221,8 @@ export const translations = {
       emailPlaceholder: 'verification@reserve.int',
       password: 'รหัสผ่านความปลอดภัย',
       confirmPassword: 'ยืนยันรหัสผ่าน',
-      agreementPrefix: 'ข้าพเจ้ารับรองว่าได้รับมอบอำนาจให้เป็นตัวแทนขององค์กรนี้ และยอมรับ',
+      agreementPrefix:
+        'ข้าพเจ้ารับรองว่าได้รับมอบอำนาจให้เป็นตัวแทนขององค์กรนี้ และยอมรับ',
       agreementMsa: 'ข้อตกลงการให้บริการระดับสถาบัน',
       agreementAnd: 'และ',
       agreementPrivacy: 'นโยบายความเป็นส่วนตัว',
@@ -225,10 +240,13 @@ export const translations = {
       statCapitalLabel: 'มูลค่าเงินทุนภายใต้การจัดการ',
       statUptimeValue: '99.9%',
       statUptimeLabel: 'อัตราความพร้อมใช้งาน',
+      invalidEmail: 'กรุณากรอกอีเมลให้ถูกต้อง',
     },
     create: {
       title: 'เพิ่มโบรกเกอร์',
-      basicInfo: 'ข้อมูลพื้นฐาน',
+      description:
+        'ลงทะเบียนสถาบันใหม่เข้าสู่ระบบนิเวศของ Sterling Midnight กรุณาตรวจสอบให้ข้อมูลทุกส่วนตรงตามเอกสารกำกับดูแล',
+      basicInfo: 'ข้อมูลทั่วไป',
       nameTh: 'ชื่อ (ไทย)',
       nameEn: 'ชื่อ (อังกฤษ)',
       descTh: 'คำอธิบาย (ไทย)',
@@ -249,12 +267,15 @@ export const translations = {
       address: 'ที่อยู่',
       email: 'อีเมล',
       website: 'เว็บไซต์',
-      submit: 'เพิ่มโบรกเกอร์',
+      cancel: 'ยกเลิกฉบับร่าง',
+      submit: 'ส่งคำขอ',
       submitting: 'กำลังบันทึก...',
       slugChecking: 'กำลังตรวจสอบ slug...',
       slugTaken: 'Slug นี้ถูกใช้งานแล้ว',
       slugAvailable: 'Slug นี้สามารถใช้งานได้',
-      invalidUrl: 'กรุณากรอก URL ให้ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)',
+      invalidUrl:
+        'กรุณากรอก URL ให้ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)',
+      invalidEmail: 'กรุณากรอกอีเมลให้ถูกต้อง',
     },
     detail: {
       slug: 'Slug',
@@ -273,9 +294,11 @@ export const translations = {
       visitWebsite: 'เยี่ยมชมเว็บไซต์',
       downloadProspectus: 'ดาวน์โหลดเอกสารข้อมูล',
       complianceTitle: 'ได้รับการกำกับดูแลตามมาตรฐาน',
-      complianceDescription: 'ดำเนินงานภายใต้กฎระเบียบสากลที่เข้มงวด เพื่อความโปร่งใสและความมั่นคงของเงินทุนสำรอง',
+      complianceDescription:
+        'ดำเนินงานภายใต้กฎระเบียบสากลที่เข้มงวด เพื่อความโปร่งใสและความมั่นคงของเงินทุนสำรอง',
       executionTitle: 'การดำเนินการที่รวดเร็ว',
-      executionDescription: 'รองรับด้วยโครงสร้างพื้นฐานความหน่วงต่ำ เชื่อมต่อโดยตรงกับตลาดหลักทรัพย์ชั้นนำทั่วโลก',
+      executionDescription:
+        'รองรับด้วยโครงสร้างพื้นฐานความหน่วงต่ำ เชื่อมต่อโดยตรงกับตลาดหลักทรัพย์ชั้นนำทั่วโลก',
       viewFullAuditReport: 'ดูรายงานตรวจสอบฉบับเต็ม',
       contactDetails: 'ข้อมูลติดต่อ',
       availableMarkets: 'ตลาดที่รองรับ',

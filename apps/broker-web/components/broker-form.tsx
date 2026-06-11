@@ -6,18 +6,19 @@ import { checkSlugAvailableAction, createBrokerAction } from '@/lib/actions';
 import { BROKER_TYPES, BrokerType, CreateBrokerInput } from '@/lib/types';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useDebounce } from '@/lib/hooks/use-debounce';
-import { isValidUrl } from '@/lib/validation';
+import { isValidUrl, isValidEmail } from '@/lib/validation';
+import { RegionSelect } from '@/components/region-select';
 
 const emptyForm: CreateBrokerInput = {
-  name: { th: '', en: '' },
-  desc: { th: '', en: '' },
+  name: { th: '', us: '' },
+  desc: { th: '', us: '' },
   slug: '',
   broker_type: 'cfd',
   logo_url: '',
   region: '',
   content_detail: {
-    title: { th: '', en: '' },
-    paragraph: [{ th: '', en: '' }],
+    title: { th: '', us: '' },
+    paragraph: [{ th: '', us: '' }],
   },
   contact_detail: {
     address: '',
@@ -33,11 +34,17 @@ export function BrokerForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
+  const [slugStatus, setSlugStatus] = useState<
+    'idle' | 'checking' | 'available' | 'taken'
+  >('idle');
   const debouncedSlug = useDebounce(form.slug, 400);
 
   const logoUrlValid = form.logo_url === '' || isValidUrl(form.logo_url);
-  const websiteValid = form.contact_detail.web_site === '' || isValidUrl(form.contact_detail.web_site);
+  const websiteValid =
+    form.contact_detail.web_site === '' ||
+    isValidUrl(form.contact_detail.web_site);
+  const emailValid =
+    form.contact_detail.email === '' || isValidEmail(form.contact_detail.email);
 
   useEffect(() => {
     const slug = debouncedSlug.trim();
@@ -59,7 +66,12 @@ export function BrokerForm() {
     };
   }, [debouncedSlug]);
 
-  const canSubmit = slugStatus !== 'taken' && slugStatus !== 'checking' && logoUrlValid && websiteValid;
+  const canSubmit =
+    slugStatus !== 'taken' &&
+    slugStatus !== 'checking' &&
+    logoUrlValid &&
+    websiteValid &&
+    emailValid;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +101,7 @@ export function BrokerForm() {
       ...prev,
       content_detail: {
         ...prev.content_detail,
-        paragraph: [...prev.content_detail.paragraph, { th: '', en: '' }],
+        paragraph: [...prev.content_detail.paragraph, { th: '', us: '' }],
       },
     }));
   };
@@ -104,7 +116,7 @@ export function BrokerForm() {
     }));
   };
 
-  const updateParagraph = (index: number, lang: 'th' | 'en', value: string) => {
+  const updateParagraph = (index: number, lang: 'th' | 'us', value: string) => {
     setForm((prev) => ({
       ...prev,
       content_detail: {
@@ -117,17 +129,19 @@ export function BrokerForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+      <legend>{dict.create.basicInfo}</legend>
       <fieldset className="flex flex-col gap-4">
-        <legend className="mb-2 text-lg font-semibold">{dict.create.basicInfo}</legend>
-
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={dict.create.nameTh}>
             <input
               required
               value={form.name.th}
               onChange={(e) =>
-                setForm((p) => ({ ...p, name: { ...p.name, th: e.target.value } }))
+                setForm((p) => ({
+                  ...p,
+                  name: { ...p.name, th: e.target.value },
+                }))
               }
               className={inputClass}
             />
@@ -135,9 +149,12 @@ export function BrokerForm() {
           <Field label={dict.create.nameEn}>
             <input
               required
-              value={form.name.en}
+              value={form.name.us}
               onChange={(e) =>
-                setForm((p) => ({ ...p, name: { ...p.name, en: e.target.value } }))
+                setForm((p) => ({
+                  ...p,
+                  name: { ...p.name, us: e.target.value },
+                }))
               }
               className={inputClass}
             />
@@ -150,7 +167,10 @@ export function BrokerForm() {
               required
               value={form.desc.th}
               onChange={(e) =>
-                setForm((p) => ({ ...p, desc: { ...p.desc, th: e.target.value } }))
+                setForm((p) => ({
+                  ...p,
+                  desc: { ...p.desc, th: e.target.value },
+                }))
               }
               className={inputClass}
               rows={2}
@@ -159,9 +179,12 @@ export function BrokerForm() {
           <Field label={dict.create.descEn}>
             <textarea
               required
-              value={form.desc.en}
+              value={form.desc.us}
               onChange={(e) =>
-                setForm((p) => ({ ...p, desc: { ...p.desc, en: e.target.value } }))
+                setForm((p) => ({
+                  ...p,
+                  desc: { ...p.desc, us: e.target.value },
+                }))
               }
               className={inputClass}
               rows={2}
@@ -169,7 +192,7 @@ export function BrokerForm() {
           </Field>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={dict.create.slug}>
             <input
               required
@@ -179,56 +202,98 @@ export function BrokerForm() {
               aria-invalid={slugStatus === 'taken'}
             />
             {slugStatus === 'checking' && (
-              <span className="text-xs text-zinc-500">{dict.create.slugChecking}</span>
+              <span className="text-xs text-slate-500">
+                {dict.create.slugChecking}
+              </span>
             )}
             {slugStatus === 'taken' && (
-              <span className="text-xs text-red-600">{dict.create.slugTaken}</span>
+              <span className="text-xs text-red-400">
+                {dict.create.slugTaken}
+              </span>
             )}
             {slugStatus === 'available' && (
-              <span className="text-xs text-green-600">{dict.create.slugAvailable}</span>
+              <span className="text-xs text-green-400">
+                {dict.create.slugAvailable}
+              </span>
             )}
-          </Field>
-
-          <Field label={dict.create.brokerType}>
-            <select
-              value={form.broker_type}
-              onChange={(e) =>
-                setForm((p) => ({ ...p, broker_type: e.target.value as BrokerType }))
-              }
-              className={inputClass}
-            >
-              {BROKER_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t.toUpperCase()}
-                </option>
-              ))}
-            </select>
           </Field>
 
           <Field label={dict.create.region}>
-            <input
-              required
+            <RegionSelect
               value={form.region}
-              onChange={(e) => setForm((p) => ({ ...p, region: e.target.value }))}
+              onChange={(region) => setForm((p) => ({ ...p, region }))}
               className={inputClass}
             />
           </Field>
         </div>
 
-        <Field label={dict.create.logoUrl}>
-          <input
-            required
-            value={form.logo_url}
-            onChange={(e) => setForm((p) => ({ ...p, logo_url: e.target.value }))}
-            className={inputClass}
-            aria-invalid={!logoUrlValid}
-          />
-          {!logoUrlValid && <span className="text-xs text-red-600">{dict.create.invalidUrl}</span>}
+        <Field label={dict.create.brokerType}>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {BROKER_TYPES.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() =>
+                  setForm((p) => ({ ...p, broker_type: t as BrokerType }))
+                }
+                className={
+                  form.broker_type === t
+                    ? 'rounded-lg border border-sky-400 bg-sky-400/10 px-4 py-3 text-sm font-semibold text-sky-300 transition-colors'
+                    : 'rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-300 transition-colors hover:border-slate-600'
+                }
+              >
+                {t.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </Field>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label={dict.create.logoUrl}>
+            <input
+              required
+              value={form.logo_url}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, logo_url: e.target.value }))
+              }
+              className={inputClass}
+              aria-invalid={!logoUrlValid}
+            />
+            {!logoUrlValid && (
+              <span className="text-xs text-red-400">
+                {dict.create.invalidUrl}
+              </span>
+            )}
+          </Field>
+          <Field label={dict.create.website}>
+            <input
+              required
+              value={form.contact_detail.web_site}
+              onChange={(e) =>
+                setForm((p) => ({
+                  ...p,
+                  contact_detail: {
+                    ...p.contact_detail,
+                    web_site: e.target.value,
+                  },
+                }))
+              }
+              className={inputClass}
+              aria-invalid={!websiteValid}
+            />
+            {!websiteValid && (
+              <span className="text-xs text-red-400">
+                {dict.create.invalidUrl}
+              </span>
+            )}
+          </Field>
+        </div>
       </fieldset>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="mb-2 text-lg font-semibold">{dict.create.contentDetail}</legend>
+        <legend className="mb-2 text-lg font-semibold text-slate-100">
+          {dict.create.contentDetail}
+        </legend>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={dict.create.titleTh}>
@@ -250,13 +315,13 @@ export function BrokerForm() {
           <Field label={dict.create.titleEn}>
             <input
               required
-              value={form.content_detail.title.en}
+              value={form.content_detail.title.us}
               onChange={(e) =>
                 setForm((p) => ({
                   ...p,
                   content_detail: {
                     ...p.content_detail,
-                    title: { ...p.content_detail.title, en: e.target.value },
+                    title: { ...p.content_detail.title, us: e.target.value },
                   },
                 }))
               }
@@ -266,13 +331,20 @@ export function BrokerForm() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium">{dict.create.paragraphs}</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            {dict.create.paragraphs}
+          </span>
           {form.content_detail.paragraph.map((p, index) => (
             <div
               key={index}
-              className="grid grid-cols-1 gap-2 rounded border border-black/10 p-3 sm:grid-cols-2 dark:border-white/10"
+              className="grid grid-cols-1 gap-2 rounded border border-slate-800 p-3 sm:grid-cols-2"
             >
-              <Field label={dict.create.paragraphTh.replace('{n}', String(index + 1))}>
+              <Field
+                label={dict.create.paragraphTh.replace(
+                  '{n}',
+                  String(index + 1),
+                )}
+              >
                 <textarea
                   required
                   value={p.th}
@@ -281,11 +353,16 @@ export function BrokerForm() {
                   rows={2}
                 />
               </Field>
-              <Field label={dict.create.paragraphEn.replace('{n}', String(index + 1))}>
+              <Field
+                label={dict.create.paragraphEn.replace(
+                  '{n}',
+                  String(index + 1),
+                )}
+              >
                 <textarea
                   required
-                  value={p.en}
-                  onChange={(e) => updateParagraph(index, 'en', e.target.value)}
+                  value={p.us}
+                  onChange={(e) => updateParagraph(index, 'us', e.target.value)}
                   className={inputClass}
                   rows={2}
                 />
@@ -294,7 +371,7 @@ export function BrokerForm() {
                 <button
                   type="button"
                   onClick={() => removeParagraph(index)}
-                  className="sm:col-span-2 text-left text-sm text-red-600"
+                  className="sm:col-span-2 text-left text-sm text-red-400"
                 >
                   {dict.create.removeParagraph}
                 </button>
@@ -304,7 +381,7 @@ export function BrokerForm() {
           <button
             type="button"
             onClick={addParagraph}
-            className="self-start rounded border border-black/10 px-3 py-1.5 text-sm dark:border-white/10"
+            className="self-start rounded border border-slate-700 px-3 py-1.5 text-sm text-slate-300 hover:border-slate-600"
           >
             {dict.create.addParagraph}
           </button>
@@ -312,7 +389,9 @@ export function BrokerForm() {
       </fieldset>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="mb-2 text-lg font-semibold">{dict.create.contactDetail}</legend>
+        <legend className="mb-2 text-lg font-semibold text-slate-100">
+          {dict.create.contactDetail}
+        </legend>
 
         <Field label={dict.create.address}>
           <input
@@ -321,66 +400,78 @@ export function BrokerForm() {
             onChange={(e) =>
               setForm((p) => ({
                 ...p,
-                contact_detail: { ...p.contact_detail, address: e.target.value },
+                contact_detail: {
+                  ...p.contact_detail,
+                  address: e.target.value,
+                },
               }))
             }
             className={inputClass}
           />
         </Field>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label={dict.create.email}>
-            <input
-              type="email"
-              required
-              value={form.contact_detail.email}
-              onChange={(e) =>
-                setForm((p) => ({
-                  ...p,
-                  contact_detail: { ...p.contact_detail, email: e.target.value },
-                }))
-              }
-              className={inputClass}
-            />
-          </Field>
-          <Field label={dict.create.website}>
-            <input
-              required
-              value={form.contact_detail.web_site}
-              onChange={(e) =>
-                setForm((p) => ({
-                  ...p,
-                  contact_detail: { ...p.contact_detail, web_site: e.target.value },
-                }))
-              }
-              className={inputClass}
-              aria-invalid={!websiteValid}
-            />
-            {!websiteValid && <span className="text-xs text-red-600">{dict.create.invalidUrl}</span>}
-          </Field>
-        </div>
+        <Field label={dict.create.email}>
+          <input
+            type="email"
+            required
+            value={form.contact_detail.email}
+            onChange={(e) =>
+              setForm((p) => ({
+                ...p,
+                contact_detail: {
+                  ...p.contact_detail,
+                  email: e.target.value,
+                },
+              }))
+            }
+            className={inputClass}
+            aria-invalid={!emailValid}
+          />
+          {!emailValid && (
+            <span className="text-xs text-red-400">
+              {dict.create.invalidEmail}
+            </span>
+          )}
+        </Field>
       </fieldset>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-400">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={loading || !canSubmit}
-        className="self-start rounded bg-zinc-900 px-5 py-2 text-sm text-white disabled:opacity-50 dark:bg-zinc-100 dark:text-black"
-      >
-        {loading ? dict.create.submitting : dict.create.submit}
-      </button>
+      <div className="flex items-center justify-end gap-6 border-t border-slate-800 pt-6">
+        <button
+          type="button"
+          onClick={() => router.push(`/${locale}`)}
+          className="text-sm font-semibold text-slate-300 hover:text-slate-100"
+        >
+          {dict.create.cancel}
+        </button>
+        <button
+          type="submit"
+          disabled={loading || !canSubmit}
+          className="rounded bg-gradient-to-r from-sky-200 to-blue-500 px-6 py-2.5 text-sm font-semibold text-slate-900 transition-opacity hover:opacity-90 disabled:opacity-50"
+        >
+          {loading ? dict.create.submitting : dict.create.submit}
+        </button>
+      </div>
     </form>
   );
 }
 
 const inputClass =
-  'w-full rounded border border-black/10 px-3 py-2 text-sm dark:border-white/10 dark:bg-black';
+  'w-full rounded border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:border-sky-400 focus:outline-none';
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <label className="flex flex-col gap-1">
-      <span className="text-sm font-medium">{label}</span>
+    <label className="flex flex-col gap-2">
+      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        {label}
+      </span>
       {children}
     </label>
   );
