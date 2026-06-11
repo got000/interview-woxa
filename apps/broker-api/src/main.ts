@@ -9,6 +9,8 @@ import { corsConfig } from './config/cors/cors.config';
 import helmet from 'helmet';
 import * as compression from 'compression';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ERROR_MESSAGES } from './config/constants';
+import { throwHttpException } from './config/filters/http-error.exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -37,6 +39,16 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      exceptionFactory: (errors) => {
+        const message = errors
+          .flatMap((error) => Object.values(error.constraints ?? {}))
+          .join(', ');
+
+        return throwHttpException({
+          ...ERROR_MESSAGES.VALIDATION_ERROR,
+          message: message || ERROR_MESSAGES.VALIDATION_ERROR.message,
+        });
+      },
     }),
   );
 

@@ -31,9 +31,9 @@ export class BrokerController {
     return await this.brokerService.getBrokerType();
   }
 
-  @Get(':id')
-  async getBroker(@Param('id') brokerId: string) {
-    return await this.brokerService.getBroker(brokerId);
+  @Get(':slug')
+  async getBroker(@Param('slug') slug: string) {
+    return await this.brokerService.getBroker(slug);
   }
 
   @Get()

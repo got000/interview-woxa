@@ -31,8 +31,8 @@ export class BrokerService {
     });
   }
 
-  async getBroker(brokerId: string) {
-    const result = await this.brokerModel.findById(brokerId);
+  async getBroker(slug: string) {
+    const result = await this.brokerModel.findOne({ slug });
     return successResponse({
       message: `get broker successfuly`,
       result,

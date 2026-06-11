@@ -18,3 +18,12 @@ export class SignInInput {
   @IsString({ message: 'Password must be a string.' })
   password: string;
 }
+
+export class RefreshTokenInput {
+  @ApiProperty({
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsString()
+  refresh_token: string;
+}

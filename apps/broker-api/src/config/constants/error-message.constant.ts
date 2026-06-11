@@ -82,4 +82,9 @@ export const ERROR_MESSAGES = {
     message: 'ไม่พบข้อมูล broker',
     status_code: HttpStatusCode.NotFound,
   },
+  VALIDATION_ERROR: {
+    code: 'VALIDATION_ERROR',
+    message: 'ข้อมูลไม่ถูกต้อง',
+    status_code: HttpStatusCode.BadRequest,
+  },
 };

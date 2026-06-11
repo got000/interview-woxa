@@ -4,9 +4,9 @@ import { ConfigService } from '@nestjs/config';
 
 export const corsConfig = (configService: ConfigService): CorsOptions => {
   const configUrl = configService.getOrThrow<IAppEnv>('app');
-  const { APP_FRONTEND_URL } = configUrl;
+  const { APP_FRONTEND_URL, APP_NODE_ENV } = configUrl;
 
-  const isProduction = process.env.APP_NODE_ENV === 'production';
+  const isProduction = APP_NODE_ENV === 'production';
 
   let origin: string | string[];
 

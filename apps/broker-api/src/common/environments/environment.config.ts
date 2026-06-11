@@ -7,6 +7,7 @@ export default (): IEnvConfig => ({
     APP_PORT: parseInt(ENV.APP_PORT ?? '3001', 10),
     APP_PREFIX: ENV.APP_PREFIX ?? '',
     APP_FRONTEND_URL: ENV.APP_FRONTEND_URL ?? '',
+    APP_NODE_ENV: ENV.APP_NODE_ENV ?? '',
   },
   jwt: {
     JWT_EXPIRATION: ENV.JWT_EXPIRATION ?? '',

@@ -1,4 +1,5 @@
 import { DefaultInput } from './../../../config/dto';
+import { IsEmailField } from './../../../config/decorators/validation.decorator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
@@ -12,12 +13,9 @@ export class UserInput {
   @IsString()
   full_name: string;
 
-  @ApiProperty({
-    example: 'ชื่อผู้ใช้',
-    required: true,
+  @IsEmailField({
+    example: 'user@example.com',
   })
-  @IsNotEmpty()
-  @IsString()
   @Transform(({ value }) => value?.trim().toLowerCase())
   email: string;
 }
