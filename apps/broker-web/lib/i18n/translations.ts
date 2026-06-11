@@ -2,6 +2,15 @@ import { Locale } from './config';
 
 export const translations = {
   us: {
+    common: {
+      loading: 'Loading...',
+      errorTitle: 'Something went wrong',
+      errorDescription: 'An unexpected error occurred while loading this page.',
+      tryAgain: 'Try again',
+      backHome: 'Back to home',
+      notFoundTitle: 'Page not found',
+      notFoundDescription: "The page you're looking for doesn't exist or has been moved.",
+    },
     nav: {
       home: 'Home',
       brokerList: 'Broker List',
@@ -157,8 +166,23 @@ export const translations = {
       sovereignBonds: 'Sovereign Bonds',
       cryptoEtps: 'Crypto ETPs',
     },
+    toast: {
+      loginSuccess: 'Logged in successfully',
+      registerSuccess: 'Account created successfully',
+      brokerCreateSuccess: 'Broker submitted successfully',
+      genericError: 'Something went wrong, please try again',
+    },
   },
   th: {
+    common: {
+      loading: 'กำลังโหลด...',
+      errorTitle: 'เกิดข้อผิดพลาด',
+      errorDescription: 'เกิดข้อผิดพลาดที่ไม่คาดคิดขณะโหลดหน้านี้',
+      tryAgain: 'ลองใหม่อีกครั้ง',
+      backHome: 'กลับหน้าแรก',
+      notFoundTitle: 'ไม่พบหน้าที่คุณต้องการ',
+      notFoundDescription: 'หน้าที่คุณกำลังค้นหาไม่มีอยู่ หรือถูกย้ายไปแล้ว',
+    },
     nav: {
       home: 'หน้าแรก',
       brokerList: 'รายชื่อโบรกเกอร์',
@@ -312,6 +336,12 @@ export const translations = {
       equities: 'หุ้น',
       sovereignBonds: 'พันธบัตรรัฐบาล',
       cryptoEtps: 'Crypto ETPs',
+    },
+    toast: {
+      loginSuccess: 'เข้าสู่ระบบสำเร็จ',
+      registerSuccess: 'สมัครสมาชิกสำเร็จ',
+      brokerCreateSuccess: 'ส่งข้อมูลโบรกเกอร์สำเร็จ',
+      genericError: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
     },
   },
 } as const satisfies Record<Locale, unknown>;

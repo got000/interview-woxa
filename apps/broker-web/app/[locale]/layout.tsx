@@ -18,7 +18,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Broker Directory',
+  title: {
+    default: 'Demo Project — Institutional Brokers',
+    template: '%s | Demo Project',
+  },
   description: 'Browse and manage brokers',
 };
 

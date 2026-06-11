@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { checkSlugAvailableAction, createBrokerAction } from '@/lib/actions';
 import { BROKER_TYPES, BrokerType, CreateBrokerInput } from '@/lib/types';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { useToast } from '@/lib/toast/toast-context';
 import { useDebounce } from '@/lib/hooks/use-debounce';
 import { isValidUrl, isValidEmail } from '@/lib/validation';
 import { RegionSelect } from '@/components/region-select';
@@ -30,6 +31,7 @@ const emptyForm: CreateBrokerInput = {
 export function BrokerForm() {
   const router = useRouter();
   const { locale, dict } = useLocale();
+  const { showToast } = useToast();
   const [form, setForm] = useState<CreateBrokerInput>(emptyForm);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -89,9 +91,11 @@ export function BrokerForm() {
 
     if (!result.success) {
       setError(result.message);
+      showToast('error', result.message);
       return;
     }
 
+    showToast('success', dict.toast.brokerCreateSuccess);
     router.push(`/${locale}`);
     router.refresh();
   };
