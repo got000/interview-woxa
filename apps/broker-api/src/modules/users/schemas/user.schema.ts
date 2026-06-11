@@ -10,23 +10,8 @@ export class Users extends SoftDelete {
   @Prop({
     type: String,
     required: true,
-    index: true,
   })
-  first_name: string;
-
-  @Prop({
-    type: String,
-    required: true,
-    index: true,
-  })
-  last_name: string;
-
-  @Prop({
-    type: String,
-    required: true,
-    index: true,
-  })
-  fullname: string;
+  full_name: string;
 
   @Prop({
     type: String,
@@ -38,22 +23,8 @@ export class Users extends SoftDelete {
   @Prop({
     type: String,
     required: false,
-    index: true,
-  })
-  phone_number: string;
-
-  @Prop({
-    type: String,
-    required: false,
   })
   password: string;
-
-  @Prop({
-    type: 'ObjectId',
-    required: true,
-    ref: CollectionEnum.ROLES,
-  })
-  role_id: ObjectId;
 
   @Prop({
     type: String,

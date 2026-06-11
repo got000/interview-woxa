@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "broker-web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "broker-web", "dev"],
+      "port": 3000
+    }
+  ]
+}
