@@ -24,7 +24,7 @@ Monorepo project for the WOXA interview assignment: a broker directory web appli
 - **TailwindCSS 4**
 - **NextAuth (Auth.js v5)** — session-based authentication (JWT in httpOnly cookies)
 - **Axios** — API client (`lib/api/`)
-- Custom i18n (`/us`, `/th` locales)
+- Custom i18n (`/en`, `/th` locales)
 
 ### Backend (`apps/broker-api`)
 
@@ -361,7 +361,7 @@ pnpm --filter broker-web lint
 
 ## Frontend Features
 
-- **i18n** — full Thai (`/th`) / English (`/us`) translations via [`lib/i18n/translations.ts`](apps/broker-web/lib/i18n/translations.ts)
+- **i18n** — full Thai (`/th`) / English (`/en`) translations via [`lib/i18n/translations.ts`](apps/broker-web/lib/i18n/translations.ts)
 - **Authentication** — login / register backed by NextAuth credentials provider
 - **Broker directory** — searchable, filterable, paginated broker list with detail pages
 - **Broker submission form** — multi-section form with live slug-availability check and field validation

@@ -13,7 +13,13 @@ export function Navbar() {
   const pathname = usePathname();
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const accountMenuRef = useRef<HTMLDivElement>(null);
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setMobileMenuOpen(false);
+  }
 
   useEffect(() => {
     if (!accountMenuOpen) return;
@@ -27,10 +33,6 @@ export function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [accountMenuOpen]);
-
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname]);
 
   const isHome =
     pathname === `/${locale}` ||
