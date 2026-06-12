@@ -52,7 +52,7 @@ export function BrokerFormFields({
       ...prev,
       content_detail: {
         ...prev.content_detail,
-        paragraph: [...prev.content_detail.paragraph, { th: '', us: '' }],
+        paragraph: [...prev.content_detail.paragraph, { th: '', en: '' }],
       },
     }));
   };
@@ -67,7 +67,7 @@ export function BrokerFormFields({
     }));
   };
 
-  const updateParagraph = (index: number, lang: 'th' | 'us', value: string) => {
+  const updateParagraph = (index: number, lang: 'th' | 'en', value: string) => {
     setForm((prev) => ({
       ...prev,
       content_detail: {
@@ -102,11 +102,11 @@ export function BrokerFormFields({
           <Field label={dict.create.nameEn}>
             <input
               required
-              value={form.name.us}
+              value={form.name.en}
               onChange={(e) =>
                 setForm((p) => ({
                   ...p,
-                  name: { ...p.name, us: e.target.value },
+                  name: { ...p.name, en: e.target.value },
                 }))
               }
               className={inputClass}
@@ -132,11 +132,11 @@ export function BrokerFormFields({
           <Field label={dict.create.descEn}>
             <textarea
               required
-              value={form.desc.us}
+              value={form.desc.en}
               onChange={(e) =>
                 setForm((p) => ({
                   ...p,
-                  desc: { ...p.desc, us: e.target.value },
+                  desc: { ...p.desc, en: e.target.value },
                 }))
               }
               className={inputClass}
@@ -268,13 +268,13 @@ export function BrokerFormFields({
           <Field label={dict.create.titleEn}>
             <input
               required
-              value={form.content_detail.title.us}
+              value={form.content_detail.title.en}
               onChange={(e) =>
                 setForm((p) => ({
                   ...p,
                   content_detail: {
                     ...p.content_detail,
-                    title: { ...p.content_detail.title, us: e.target.value },
+                    title: { ...p.content_detail.title, en: e.target.value },
                   },
                 }))
               }
@@ -314,8 +314,8 @@ export function BrokerFormFields({
               >
                 <textarea
                   required
-                  value={p.us}
-                  onChange={(e) => updateParagraph(index, 'us', e.target.value)}
+                  value={p.en}
+                  onChange={(e) => updateParagraph(index, 'en', e.target.value)}
                   className={inputClass}
                   rows={2}
                 />

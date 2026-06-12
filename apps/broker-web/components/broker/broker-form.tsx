@@ -12,15 +12,15 @@ import { resolveErrorMessage } from '@/lib/error-message';
 import { BrokerFormFields } from '@/components/broker/broker-form-fields';
 
 const emptyForm: CreateBrokerInput = {
-  name: { th: '', us: '' },
-  desc: { th: '', us: '' },
+  name: { th: '', en: '' },
+  desc: { th: '', en: '' },
   slug: '',
   broker_type: 'cfd',
   logo_url: '',
   region: '',
   content_detail: {
-    title: { th: '', us: '' },
-    paragraph: [{ th: '', us: '' }],
+    title: { th: '', en: '' },
+    paragraph: [{ th: '', en: '' }],
   },
   contact_detail: {
     address: '',

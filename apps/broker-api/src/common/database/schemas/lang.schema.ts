@@ -11,5 +11,5 @@ export class LangSchema {
     type: String,
     required: false,
   })
-  us: string;
+  en: string;
 }
