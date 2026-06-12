@@ -39,7 +39,7 @@ export function LanguageSwitcher() {
       aria-label="Language"
       className="rounded border border-slate-700 bg-transparent px-2 py-1 text-sm text-slate-200"
     >
-      <option value="us">🇺🇸 US</option>
+      <option value="en">🇺🇸 EN</option>
       <option value="th">🇹🇭 TH</option>
     </select>
   );

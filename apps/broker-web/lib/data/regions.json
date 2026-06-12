@@ -1,9 +1,9 @@
 [
-  { "code": "Global", "flag": "🌍", "name": { "us": "Global", "th": "ทั่วโลก" } },
-  { "code": "Asia", "flag": "🌏", "name": { "us": "Asia", "th": "เอเชีย" } },
-  { "code": "Europe", "flag": "🇪🇺", "name": { "us": "Europe", "th": "ยุโรป" } },
-  { "code": "Americas", "flag": "🌎", "name": { "us": "Americas", "th": "อเมริกา" } },
-  { "code": "Middle East", "flag": "🇦🇪", "name": { "us": "Middle East", "th": "ตะวันออกกลาง" } },
-  { "code": "Africa", "flag": "🌍", "name": { "us": "Africa", "th": "แอฟริกา" } },
-  { "code": "Oceania", "flag": "🇦🇺", "name": { "us": "Oceania", "th": "โอเชียเนีย" } }
+  { "code": "global", "flag": "🌍", "name": { "en": "Global", "th": "ทั่วโลก" } },
+  { "code": "asia", "flag": "🌏", "name": { "en": "Asia", "th": "เอเชีย" } },
+  { "code": "europe", "flag": "🇪🇺", "name": { "en": "Europe", "th": "ยุโรป" } },
+  { "code": "americas", "flag": "🌎", "name": { "en": "Americas", "th": "อเมริกา" } },
+  { "code": "middle east", "flag": "🇦🇪", "name": { "en": "Middle East", "th": "ตะวันออกกลาง" } },
+  { "code": "africa", "flag": "🌍", "name": { "en": "Africa", "th": "แอฟริกา" } },
+  { "code": "oceania", "flag": "🇦🇺", "name": { "en": "Oceania", "th": "โอเชียเนีย" } }
 ]

@@ -75,5 +75,5 @@ export class LangInput {
   })
   @IsString()
   @IsNotEmpty()
-  us: string;
+  en: string;
 }

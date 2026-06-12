@@ -1,7 +1,7 @@
 import { Locale } from './config';
 
 export const translations = {
-  us: {
+  en: {
     common: {
       loading: 'Loading...',
       errorTitle: 'Something went wrong',

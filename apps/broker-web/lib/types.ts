@@ -1,6 +1,6 @@
 export interface LangValue {
   th: string;
-  us: string;
+  en: string;
 }
 
 export type BrokerType = 'cfd' | 'bond' | 'stock' | 'crypto';

@@ -21,7 +21,7 @@ import {
 export class ContentsInput {
   @ApiProperty({
     type: LangInput,
-    example: { th: 'รายละเอียดโบรกเกอร์', us: 'Broker overview' },
+    example: { th: 'รายละเอียดโบรกเกอร์', en: 'Broker overview' },
   })
   @ValidateNested()
   @Type(() => LangInput)
@@ -32,7 +32,7 @@ export class ContentsInput {
     example: [
       {
         th: 'เนื้อหารายละเอียดโบรกเกอร์',
-        us: 'Broker detail content',
+        en: 'Broker detail content',
       },
     ],
   })
@@ -67,7 +67,7 @@ export class CreateBrokerInput {
   @ApiProperty({
     type: LangInput,
     required: true,
-    example: { th: 'โบรกเกอร์ตัวอย่าง', us: 'Sample Broker' },
+    example: { th: 'โบรกเกอร์ตัวอย่าง', en: 'Sample Broker' },
   })
   @ValidateNested()
   @Type(() => LangInput)
@@ -78,7 +78,7 @@ export class CreateBrokerInput {
     required: true,
     example: {
       th: 'คำอธิบายโบรกเกอร์ตัวอย่าง',
-      us: 'Sample broker description',
+      en: 'Sample broker description',
     },
   })
   @ValidateNested()
