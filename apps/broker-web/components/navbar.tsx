@@ -12,6 +12,7 @@ export function Navbar() {
   const { locale, dict } = useLocale();
   const pathname = usePathname();
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,6 +27,10 @@ export function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [accountMenuOpen]);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   const isHome =
     pathname === `/${locale}` ||
@@ -46,7 +51,7 @@ export function Navbar() {
 
   return (
     <header className="bg-slate-950">
-      <nav className="mx-auto grid max-w-8xl grid-cols-3 items-center px-6 py-4 sm:px-10">
+      <nav className="mx-auto flex max-w-8xl items-center justify-between px-6 py-4 sm:grid sm:grid-cols-3 sm:px-10">
         <Link href={`/${locale}`} className="justify-self-start text-xl font-bold text-sky-300">
           Woxa
         </Link>
@@ -171,8 +176,69 @@ export function Navbar() {
               )}
             </div>
           )}
+
+          <button
+            type="button"
+            aria-label="Menu"
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className="text-slate-300 hover:text-white sm:hidden"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-6 w-6"
+            >
+              {mobileMenuOpen ? (
+                <path d="M6 6l12 12M18 6L6 18" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
       </nav>
+
+      {mobileMenuOpen && (
+        <div className="border-t border-slate-800 px-6 py-4 sm:hidden">
+          <div className="flex flex-col gap-3 text-sm font-medium">
+            <Link href={`/${locale}`} className={navLinkClass(isHome)}>
+              {dict.nav.brokers}
+            </Link>
+            <Link href={`/${locale}/market`} className={navLinkClass(isMarket)}>
+              {dict.nav.markets}
+            </Link>
+            <Link href={`/${locale}/analysis`} className={navLinkClass(isAnalysis)}>
+              {dict.nav.analysis}
+            </Link>
+            <Link href={`/${locale}/education`} className={navLinkClass(isEducation)}>
+              {dict.nav.education}
+            </Link>
+
+            {status === 'authenticated' && (
+              <Link href={`/${locale}/create`} className={navLinkClass(false)}>
+                {dict.nav.createBroker}
+              </Link>
+            )}
+
+            {status === 'unauthenticated' && (
+              <>
+                <Link href={`/${locale}/login`} className={navLinkClass(false)}>
+                  {dict.nav.login}
+                </Link>
+                <Link href={`/${locale}/register`} className={navLinkClass(false)}>
+                  {dict.nav.register}
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }

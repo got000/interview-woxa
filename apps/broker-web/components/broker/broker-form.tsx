@@ -105,6 +105,12 @@ export function BrokerForm() {
     router.refresh();
   };
 
+  const handleDiscard = () => {
+    setForm(emptyForm);
+    setError(null);
+    setSlugStatus('idle');
+  };
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <BrokerFormFields
@@ -121,6 +127,14 @@ export function BrokerForm() {
 
       <div className="flex items-center justify-end gap-6 border-t border-slate-800 pt-6">
         <button
+          type="button"
+          onClick={handleDiscard}
+          disabled={loading}
+          className="rounded border border-slate-700 px-6 py-2.5 text-sm font-semibold text-slate-300 transition-colors hover:bg-slate-800 disabled:opacity-50"
+        >
+          {dict.create.cancel}
+        </button>
+        <button
           type="submit"
           disabled={loading || !canSubmit}
           className="rounded bg-gradient-to-r from-sky-200 to-blue-500 px-6 py-2.5 text-sm font-semibold text-slate-900 transition-opacity hover:opacity-90 disabled:opacity-50"
@@ -128,6 +142,34 @@ export function BrokerForm() {
           {loading ? dict.create.submitting : dict.create.submit}
         </button>
       </div>
+
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70">
+          <div className="flex flex-col items-center gap-3 rounded-lg border border-slate-800 bg-slate-900 px-8 py-6 shadow-xl">
+            <svg
+              className="h-8 w-8 animate-spin text-sky-400"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z"
+              />
+            </svg>
+            <p className="text-sm text-slate-200">{dict.create.submitting}</p>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
