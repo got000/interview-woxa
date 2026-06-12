@@ -121,13 +121,6 @@ export function BrokerForm() {
 
       <div className="flex items-center justify-end gap-6 border-t border-slate-800 pt-6">
         <button
-          type="button"
-          onClick={() => router.push(`/${locale}`)}
-          className="text-sm font-semibold text-slate-300 hover:text-slate-100"
-        >
-          {dict.create.cancel}
-        </button>
-        <button
           type="submit"
           disabled={loading || !canSubmit}
           className="rounded bg-gradient-to-r from-sky-200 to-blue-500 px-6 py-2.5 text-sm font-semibold text-slate-900 transition-opacity hover:opacity-90 disabled:opacity-50"

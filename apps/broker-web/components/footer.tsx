@@ -16,7 +16,7 @@ export function Footer() {
           Woxa
         </Link>
 
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs uppercase tracking-wider text-slate-400">
+        <div className="flex flex-wrap items-center justify-start gap-6 text-xs uppercase tracking-wider text-slate-400">
           <Link href="#" className="hover:text-white">
             {dict.footer.privacyPolicy}
           </Link>
