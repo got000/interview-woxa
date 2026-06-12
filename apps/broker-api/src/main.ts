@@ -34,7 +34,7 @@ async function bootstrap() {
     .build();
 
   const documentFactory = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('/swagger', app, documentFactory);
+  SwaggerModule.setup('/docs', app, documentFactory);
 
   app.useGlobalPipes(
     new ValidationPipe({

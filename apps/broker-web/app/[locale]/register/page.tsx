@@ -25,8 +25,8 @@ export default async function RegisterPage({
   const dict = getDictionary(locale);
 
   return (
-    <div className="bg-slate-950">
-      <div className="grid grid-cols-1 lg:grid-cols-2">
+    <div className="flex min-h-[85vh] flex-col bg-slate-950">
+      <div className="grid flex-1 grid-cols-1 content-stretch items-stretch lg:grid-cols-2">
         {/* Left Panel */}
         <div className="relative isolate hidden min-h-[720px] flex-col justify-end overflow-hidden px-14 pb-16 pt-24 lg:flex">
           <Image

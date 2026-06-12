@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { auth } from '@/auth';
-import { getBrokers } from '@/lib/api';
-import { BrokerType } from '@/lib/types';
-import { BrokerFilters } from '@/components/broker-filters';
-import { BrokerPagination } from '@/components/broker-pagination';
-import { BrokerCard } from '@/components/broker-card';
+import { getBrokers } from '@/lib/api/broker';
+import { ApiError } from '@/lib/api/client';
+import { BrokerType, PaginatedResponse, Broker } from '@/lib/types';
+import { BrokerFilters } from '@/components/broker/broker-filters';
+import { BrokerPagination } from '@/components/broker/broker-pagination';
+import { BrokerCard } from '@/components/broker/broker-card';
+import { RateLimitNotice } from '@/components/rate-limit-notice';
 import { resolveLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/translations';
 
@@ -23,19 +25,30 @@ export default async function Home({
   const session = await auth();
   const isLoggedIn = Boolean(session?.accessToken);
 
-  const data = await getBrokers({
-    search,
-    type: (type as BrokerType) ?? '',
-    status: isLoggedIn ? undefined : 'active',
-    limit: 9,
-    skip: Number(page) || 1,
-  });
+  let data: PaginatedResponse<Broker> | undefined;
+  let rateLimited = false;
 
-  const brokers = data.result ?? [];
+  try {
+    data = await getBrokers({
+      search,
+      type: (type as BrokerType) ?? '',
+      status: isLoggedIn ? undefined : 'active',
+      limit: 9,
+      skip: Number(page) || 1,
+    });
+  } catch (err) {
+    if (err instanceof ApiError && err.code === 'TOO_MANY_REQUESTS') {
+      rateLimited = true;
+    } else {
+      throw err;
+    }
+  }
 
-  const total = data.pagination?.total ?? 0;
-  const totalPages = data.pagination?.total_pages ?? 0;
-  const currentPage = data.pagination?.current_page ?? 1;
+  const brokers = data?.result ?? [];
+
+  const total = data?.pagination?.total ?? 0;
+  const totalPages = data?.pagination?.total_pages ?? 0;
+  const currentPage = data?.pagination?.current_page ?? 1;
 
   // If the last page is completely full (9 brokers), push the
   // "Partner with Us" card onto its own extra page instead of
@@ -48,7 +61,7 @@ export default async function Home({
   const partnerCardAlone = brokers.length % 3 === 0;
 
   return (
-    <div className="mx-auto w-full max-w-6xl flex-1 px-4 mb-2">
+    <div className="mx-auto w-full max-w-8xl flex-1 px-6 pt-8 sm:px-10 lg:px-30 mb-2">
       <h1 className="font-serif text-4xl font-bold text-slate-100">
         {dict.home.title}
       </h1>
@@ -60,11 +73,13 @@ export default async function Home({
         <BrokerFilters />
       </div>
 
-      {total === 0 && (
+      {rateLimited && <RateLimitNotice dict={dict} />}
+
+      {!rateLimited && total === 0 && (
         <p className="mb-6 text-slate-500">{dict.home.noBrokers}</p>
       )}
 
-      {(total > 0 || showPartnerCard) && (
+      {!rateLimited && (total > 0 || showPartnerCard) && (
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {brokers.map((broker) => (
             <BrokerCard
@@ -99,10 +114,12 @@ export default async function Home({
         </div>
       )}
 
-      <BrokerPagination
-        currentPage={currentPage}
-        totalPages={effectiveTotalPages}
-      />
+      {!rateLimited && (
+        <BrokerPagination
+          currentPage={currentPage}
+          totalPages={effectiveTotalPages}
+        />
+      )}
     </div>
   );
 }

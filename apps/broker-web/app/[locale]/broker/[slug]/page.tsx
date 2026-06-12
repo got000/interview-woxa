@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getBrokerBySlug } from '@/lib/api';
+import { getBrokerBySlug } from '@/lib/api/broker';
+import { ApiError } from '@/lib/api/client';
+import { RateLimitNotice } from '@/components/rate-limit-notice';
 import { resolveLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/translations';
 
@@ -40,10 +42,19 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug, locale: rawLocale } = await params;
   const locale = resolveLocale(rawLocale);
-  const broker = await getBrokerBySlug(slug);
+  const dict = getDictionary(locale);
+
+  let broker;
+  try {
+    broker = await getBrokerBySlug(slug);
+  } catch (err) {
+    if (err instanceof ApiError && err.code === 'TOO_MANY_REQUESTS') {
+      return { title: dict.common.rateLimitTitle };
+    }
+    throw err;
+  }
 
   if (!broker) {
-    const dict = getDictionary(locale);
     return {
       title: dict.common.notFoundTitle,
     };
@@ -58,8 +69,21 @@ export async function generateMetadata({
 export default async function BrokerDetailPage({ params }: PageProps) {
   const { slug, locale: rawLocale } = await params;
   const locale = resolveLocale(rawLocale);
-  const broker = await getBrokerBySlug(slug);
   const dict = getDictionary(locale);
+
+  let broker;
+  try {
+    broker = await getBrokerBySlug(slug);
+  } catch (err) {
+    if (err instanceof ApiError && err.code === 'TOO_MANY_REQUESTS') {
+      return (
+        <div className="px-6 pt-8 sm:px-10">
+          <RateLimitNotice dict={dict} />
+        </div>
+      );
+    }
+    throw err;
+  }
 
   if (!broker) {
     notFound();
@@ -68,14 +92,14 @@ export default async function BrokerDetailPage({ params }: PageProps) {
   const metrics = broker.performance_metrics;
 
   return (
-    <div className="-mx-6 flex flex-col gap-10">
+    <div className="-mx-6 flex flex-col gap-10 mb-2">
       <div
         className="relative flex min-h-[420px] flex-col justify-end bg-slate-800 bg-cover bg-center px-6 py-10 sm:px-10"
         style={{ backgroundImage: `url(${broker.logo_url})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/20" />
 
-        <div className="relative flex flex-col gap-4">
+        <div className="relative flex flex-col gap-4 lg:px-20">
           <div className="flex items-center gap-3">
             <span className="rounded bg-sky-200 px-2 py-1 text-xs font-semibold uppercase tracking-wider text-slate-900">
               {dict.detail.gradeLabel}
@@ -112,7 +136,7 @@ export default async function BrokerDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-10 px-6 sm:px-10">
+      <div className="flex flex-col gap-10 px-6 sm:px-10 lg:px-30">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="flex flex-col gap-6 lg:col-span-2">
             <section>
@@ -216,12 +240,20 @@ export default async function BrokerDetailPage({ params }: PageProps) {
               <div className="mt-4 flex flex-col gap-3 text-sm text-slate-300">
                 <div className="flex items-start gap-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/pin.svg" className="mt-0.5 h-4 w-4 flex-shrink-0" alt="" />
+                  <img
+                    src="/icon/pin.svg"
+                    className="mt-0.5 h-4 w-4 flex-shrink-0"
+                    alt=""
+                  />
                   <span>{broker.contact_detail.address}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/mail.svg" className="mt-0.5 h-4 w-4 flex-shrink-0" alt="" />
+                  <img
+                    src="/icon/mail.svg"
+                    className="mt-0.5 h-4 w-4 flex-shrink-0"
+                    alt=""
+                  />
                   <a
                     href={`mailto:${broker.contact_detail.email}`}
                     className="hover:text-sky-400"
@@ -231,7 +263,11 @@ export default async function BrokerDetailPage({ params }: PageProps) {
                 </div>
                 <div className="flex items-start gap-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/globe.svg" className="mt-0.5 h-4 w-4 flex-shrink-0" alt="" />
+                  <img
+                    src="/icon/globe.svg"
+                    className="mt-0.5 h-4 w-4 flex-shrink-0"
+                    alt=""
+                  />
                   <a
                     href={broker.contact_detail.web_site}
                     target="_blank"
@@ -270,5 +306,3 @@ export default async function BrokerDetailPage({ params }: PageProps) {
     </div>
   );
 }
-
-

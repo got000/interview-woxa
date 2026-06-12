@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { loginUser } from './lib/api';
+import { loginUser } from './lib/api/auth';
 import { DEFAULT_LOCALE } from './lib/i18n/config';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

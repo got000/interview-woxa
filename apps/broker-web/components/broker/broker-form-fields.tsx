@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { BROKER_TYPES, BrokerType, CreateBrokerInput } from '@/lib/types';
 import { Dictionary } from '@/lib/i18n/translations';
-import { RegionSelect } from '@/components/region-select';
+import { RegionSelect } from '@/components/broker/region-select';
 
 type SlugStatus = 'idle' | 'checking' | 'available' | 'taken';
 
@@ -346,46 +346,49 @@ export function BrokerFormFields({
           {dict.create.contactDetail}
         </legend>
 
-        <Field label={dict.create.address}>
-          <input
-            required
-            value={form.contact_detail.address}
-            onChange={(e) =>
-              setForm((p) => ({
-                ...p,
-                contact_detail: {
-                  ...p.contact_detail,
-                  address: e.target.value,
-                },
-              }))
-            }
-            className={inputClass}
-          />
-        </Field>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label={dict.create.address}>
+            <textarea
+              required
+              value={form.contact_detail.address}
+              onChange={(e) =>
+                setForm((p) => ({
+                  ...p,
+                  contact_detail: {
+                    ...p.contact_detail,
+                    address: e.target.value,
+                  },
+                }))
+              }
+              className={inputClass}
+              rows={2}
+            />
+          </Field>
 
-        <Field label={dict.create.email}>
-          <input
-            type="email"
-            required
-            value={form.contact_detail.email}
-            onChange={(e) =>
-              setForm((p) => ({
-                ...p,
-                contact_detail: {
-                  ...p.contact_detail,
-                  email: e.target.value,
-                },
-              }))
-            }
-            className={inputClass}
-            aria-invalid={!emailValid}
-          />
-          {!emailValid && (
-            <span className="text-xs text-red-400">
-              {dict.create.invalidEmail}
-            </span>
-          )}
-        </Field>
+          <Field label={dict.create.email}>
+            <input
+              type="email"
+              required
+              value={form.contact_detail.email}
+              onChange={(e) =>
+                setForm((p) => ({
+                  ...p,
+                  contact_detail: {
+                    ...p.contact_detail,
+                    email: e.target.value,
+                  },
+                }))
+              }
+              className={inputClass}
+              aria-invalid={!emailValid}
+            />
+            {!emailValid && (
+              <span className="text-xs text-red-400">
+                {dict.create.invalidEmail}
+              </span>
+            )}
+          </Field>
+        </div>
       </fieldset>
     </>
   );

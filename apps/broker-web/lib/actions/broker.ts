@@ -1,38 +1,15 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { auth } from '@/auth';
 import {
   createBroker,
   getBrokerBySlug,
-  registerUser,
   updateBroker,
   updateBrokerStatus,
-  ApiError,
-} from './api';
-import { BrokerStatus, CreateBrokerInput, CreateUserInput } from './types';
-import { Locale, LOCALE_COOKIE } from './i18n/config';
-
-type ActionResult =
-  | { success: true }
-  | { success: false; message: string; code?: string };
-
-export async function registerAction(payload: CreateUserInput): Promise<ActionResult> {
-  try {
-    await registerUser(payload);
-    return { success: true };
-  } catch (err) {
-    return {
-      success: false,
-      message: err instanceof ApiError ? err.message : 'Something went wrong',
-    };
-  }
-}
-
-export async function setLocaleAction(locale: Locale): Promise<void> {
-  const cookieStore = await cookies();
-  cookieStore.set(LOCALE_COOKIE, locale, { path: '/', maxAge: 60 * 60 * 24 * 365 });
-}
+} from '../api/broker';
+import { ApiError } from '../api/client';
+import { BrokerStatus, CreateBrokerInput } from '../types';
+import { ActionResult } from './types';
 
 export async function checkSlugAvailableAction(
   slug: string,
