@@ -337,4 +337,11 @@ pnpm --filter broker-web lint
 
 ## Production Deployment
 
-Production builds use `docker-compose.yml` and are deployed automatically via GitHub Actions (build → push to GHCR → deploy to VPS) when `main` is updated. Production uses an external MongoDB Atlas cluster and a Redis instance configured via `apps/broker-api/.env.prod`.
+Production builds use `docker-compose.yml` and are deployed automatically via GitHub Actions (build → push to GHCR → deploy to VPS) when `main` is updated. Production uses an external MongoDB Atlas cluster and a managed Redis instance.
+
+### Secrets Management (Infisical)
+
+Production environment variables for both `broker-api` and `broker-web` are stored and managed in **Infisical** rather than committed to the repo.
+
+- During deployment, the VPS pulls the latest secrets from Infisical and provides them to the containers via `docker-compose.yml`.
+- To change a production value, update it in Infisical and redeploy — editing local env files directly only reflects intent and will be overwritten on the next deploy.
