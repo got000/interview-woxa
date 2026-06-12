@@ -122,6 +122,41 @@ This is a PNPM workspace — install once from the repo root, it covers both app
 pnpm install
 ```
 
+### Adding a New Package
+
+This repo is a **PNPM workspace** (see `pnpm-workspace.yaml`), meaning `apps/broker-api` and `apps/broker-web` are two separate packages that share a single `node_modules`/lockfile at the root. Because of this, you should **not** run a plain `pnpm add <package>` from the repo root — it won't know which app the dependency belongs to. Instead, always target the app explicitly with `--filter <app-name> add <package>`.
+
+#### Adding to the frontend (`broker-web`)
+
+If a new package is only needed by the Next.js app (e.g. a date-formatting library like `dayjs`), install it into `broker-web`:
+
+```bash
+pnpm --filter broker-web add dayjs
+```
+
+#### Adding to the backend (`broker-api`)
+
+If a new package is only needed by the NestJS API (e.g. `dayjs` for formatting dates in API responses), install it into `broker-api` instead:
+
+```bash
+pnpm --filter broker-api add dayjs
+```
+
+#### Adding to both apps
+
+If both the frontend and backend need the same package, run the command twice — once per app — as shown above. Each app keeps its own entry in its `package.json`, even though PNPM may still hoist/share the actual files on disk.
+
+#### Dev dependencies (types, linters, test libraries, etc.)
+
+Add the `-D` flag, the same way you'd use it with plain `pnpm add`:
+
+```bash
+# e.g. type definitions only needed at build time
+pnpm --filter broker-web add -D @types/dayjs
+```
+
+After installing, run `pnpm install` (or simply re-run the command above) so the root lockfile (`pnpm-lock.yaml`) stays in sync — commit the updated lockfile along with your `package.json` change.
+
 ### Start Project (without Docker)
 
 Make sure MongoDB (and Redis if `APP_NODE_ENV=production`) are reachable (see [Database Setup](#2-database-setup), Option B) and `.env` files are in place.
