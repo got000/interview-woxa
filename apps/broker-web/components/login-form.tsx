@@ -1,13 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useToast } from '@/lib/toast/toast-context';
 
 export function LoginForm() {
-  const router = useRouter();
   const { locale, dict } = useLocale();
   const { showToast } = useToast();
   const [email, setEmail] = useState('');
@@ -36,8 +34,7 @@ export function LoginForm() {
     }
 
     showToast('success', dict.toast.loginSuccess);
-    router.push(`/${locale}/create`);
-    router.refresh();
+    window.location.href = `/${locale}/create`;
   };
 
   return (

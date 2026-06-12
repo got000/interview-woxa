@@ -28,8 +28,11 @@ import { IAppEnv, ICacheEnv } from './common/environments/environment.interface'
             {
               ttl: 60000,
               limit: 60,
+              skipIf: () => isDevelopment,
             },
           ],
+          errorMessage: 'RATE_LIMIT_EXCEEDED',
+          setHeaders: true,
           storage: new ThrottlerStorageRedisService(REDIS_URL, {
             keyPrefix: REDIS_PREFIX,
             password: isDevelopment ? undefined : REDIS_PASSWORD || undefined,

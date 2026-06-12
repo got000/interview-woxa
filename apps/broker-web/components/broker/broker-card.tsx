@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { Broker } from '@/lib/types';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useToast } from '@/lib/toast/toast-context';
-import { updateBrokerStatusAction } from '@/lib/actions';
-import { BrokerEditModal } from '@/components/broker-edit-modal';
+import { updateBrokerStatusAction } from '@/lib/actions/broker';
+import { resolveErrorMessage } from '@/lib/error-message';
+import { BrokerEditModal } from '@/components/broker/broker-edit-modal';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 
 export function BrokerCard({
@@ -39,7 +40,7 @@ export function BrokerCard({
     setConfirmOpen(false);
 
     if (!result.success) {
-      showToast('error', result.message);
+      showToast('error', resolveErrorMessage(result, dict));
       return;
     }
 
@@ -70,13 +71,15 @@ export function BrokerCard({
               e.preventDefault();
               setConfirmOpen(true);
             }}
-            className={`relative h-5 w-9 rounded-full transition-colors ${
-              isActive ? 'bg-sky-500' : 'bg-slate-700'
+            className={`relative inline-flex h-6 w-11 items-center rounded-full border backdrop-blur transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
+              isActive
+                ? 'border-sky-400/40 bg-sky-500/90'
+                : 'border-slate-600/60 bg-slate-950/80'
             }`}
           >
             <span
-              className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
-                isActive ? 'translate-x-4' : 'translate-x-0.5'
+              className={`inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-md transition-transform duration-200 ease-in-out ${
+                isActive ? 'translate-x-6' : 'translate-x-1'
               }`}
             />
           </button>

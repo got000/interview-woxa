@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useTransition } from 'react';
-import { setLocaleAction } from '@/lib/actions';
+import { setLocaleAction } from '@/lib/actions/locale';
 import { LOCALES, Locale } from '@/lib/i18n/config';
 import { useLocale } from '@/lib/i18n/locale-context';
 

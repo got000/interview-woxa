@@ -1,6 +1,7 @@
 import { DefaultInput } from './../../../config/dto';
 import {
   IsEmailField,
+  IsStrongPasswordField,
   ToLowerCase,
 } from './../../../config/decorators/validation.decorator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -23,30 +24,20 @@ export class UserInput {
 }
 
 export class CreateUserInput extends UserInput {
-  @ApiProperty({
-    example: 'รหัสผ่าน',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
+  @IsStrongPasswordField()
   password: string;
 
-  @ApiProperty({
-    example: 'รหัสผ่าน',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  confirm_password: string;
-}
-
-export class ChangeUserPasswordInput {
   @ApiProperty({
     example: 'รหัสผ่าน',
     required: true,
   })
   @IsNotEmpty()
   @IsString()
+  confirm_password: string;
+}
+
+export class ChangeUserPasswordInput {
+  @IsStrongPasswordField()
   password: string;
 
   @ApiProperty({

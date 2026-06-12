@@ -8,12 +8,15 @@ export function Footer() {
 
   return (
     <footer className="bg-slate-950">
-      <div className="mx-auto flex max-w-8xl flex-wrap items-center justify-between gap-4 px-10 py-3 text-xl">
-        <Link href={`/${locale}`} className="text-base font-bold text-sky-300">
+      <div className="mx-auto grid max-w-8xl grid-cols-1 items-center gap-4 px-6 py-3 text-xl sm:grid-cols-3 sm:px-10">
+        <Link
+          href={`/${locale}`}
+          className="justify-self-center text-base font-bold text-sky-300 sm:justify-self-start"
+        >
           Woxa
         </Link>
 
-        <div className="flex flex-wrap items-center gap-6 text-xs uppercase tracking-wider text-slate-400">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs uppercase tracking-wider text-slate-400">
           <Link href="#" className="hover:text-white">
             {dict.footer.privacyPolicy}
           </Link>
@@ -28,7 +31,9 @@ export function Footer() {
           </Link>
         </div>
 
-        <span className="text-xs text-slate-500">{dict.footer.copyright}</span>
+        <span className="justify-self-center text-xs text-slate-500 sm:justify-self-end">
+          {dict.footer.copyright}
+        </span>
       </div>
 
       <div className="mx-auto max-w-8xl px-10 pb-3 text-center text-[11px] leading-relaxed text-slate-600">

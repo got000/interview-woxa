@@ -1,7 +1,15 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Matches,
+  MinLength,
+} from 'class-validator';
 
 export function ToLowerCase() {
   return Transform(({ value }: { value: unknown }) =>
@@ -25,6 +33,29 @@ export function IsEmailField(options: FieldOptions = {}) {
     optional ? IsOptional() : IsNotEmpty(),
     IsString(),
     IsEmail(),
+  );
+}
+
+const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_HAS_LETTER_AND_NUMBER_REGEX = /^(?=.*[A-Za-z])(?=.*\d).+$/;
+
+export function IsStrongPasswordField(options: FieldOptions = {}) {
+  const { optional, ...apiPropertyOptions } = options;
+
+  return applyDecorators(
+    ApiProperty({
+      example: 'Passw0rd',
+      ...apiPropertyOptions,
+      required: !optional,
+    } as ApiPropertyOptions),
+    optional ? IsOptional() : IsNotEmpty(),
+    IsString(),
+    MinLength(PASSWORD_MIN_LENGTH, {
+      message: 'Password must be at least 8 characters long',
+    }),
+    Matches(PASSWORD_HAS_LETTER_AND_NUMBER_REGEX, {
+      message: 'Password must contain at least one letter and one number',
+    }),
   );
 }
 

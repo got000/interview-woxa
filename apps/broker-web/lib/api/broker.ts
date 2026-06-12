@@ -1,64 +1,12 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
+import { api, handleError } from './client';
 import {
   Broker,
   BrokerStatus,
   BrokerType,
   CreateBrokerInput,
-  CreateUserInput,
   PaginatedResponse,
-} from './types';
-
-const API_URL = process.env.API_URL ?? 'http://localhost:3001/api/v1';
-
-const api = axios.create({
-  baseURL: API_URL,
-});
-
-export class ApiError extends Error {
-  constructor(
-    message: string,
-    public statusCode: number,
-    public code?: string,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
-
-function handleError(err: unknown): never {
-  if (err instanceof AxiosError) {
-    const message = err.response?.data?.message ?? 'Something went wrong';
-    const code = err.response?.data?.code;
-    throw new ApiError(message, err.response?.status ?? 500, code);
-  }
-  throw err;
-}
-
-export async function loginUser(username: string, password: string) {
-  try {
-    const { data } = await api.post<{
-      access_token: string;
-      _id: string;
-      email: string;
-      full_name: string;
-      status: string;
-      is_deleted: boolean;
-    }>('/login', { username, password });
-
-    return data;
-  } catch (err) {
-    handleError(err);
-  }
-}
-
-export async function registerUser(payload: CreateUserInput) {
-  try {
-    const { data } = await api.post('/register', payload);
-    return data;
-  } catch (err) {
-    handleError(err);
-  }
-}
+} from '../types';
 
 export async function getBrokers(params: {
   search?: string;

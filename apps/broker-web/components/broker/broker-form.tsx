@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { checkSlugAvailableAction, createBrokerAction } from '@/lib/actions';
+import { checkSlugAvailableAction, createBrokerAction } from '@/lib/actions/broker';
 import { CreateBrokerInput } from '@/lib/types';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useToast } from '@/lib/toast/toast-context';
 import { useDebounce } from '@/lib/hooks/use-debounce';
 import { isValidUrl, isValidEmail } from '@/lib/validation';
-import { BrokerFormFields } from '@/components/broker-form-fields';
+import { resolveErrorMessage } from '@/lib/error-message';
+import { BrokerFormFields } from '@/components/broker/broker-form-fields';
 
 const emptyForm: CreateBrokerInput = {
   name: { th: '', us: '' },
@@ -90,8 +91,9 @@ export function BrokerForm() {
     setLoading(false);
 
     if (!result.success) {
-      setError(result.message);
-      showToast('error', result.message);
+      const message = resolveErrorMessage(result, dict);
+      setError(message);
+      showToast('error', message);
       if (result.code === 'SLUG_ALREADY_EXISTS') {
         setSlugStatus('taken');
       }

@@ -10,6 +10,9 @@ export const translations = {
       backHome: 'Back to home',
       notFoundTitle: 'Page not found',
       notFoundDescription: "The page you're looking for doesn't exist or has been moved.",
+      rateLimitTitle: "You're going a bit too fast",
+      rateLimitDescription:
+        "We're receiving too many requests from you in a short time. Please wait a moment and try again.",
     },
     nav: {
       home: 'Home',
@@ -60,16 +63,15 @@ export const translations = {
     login: {
       title: 'Login',
       brandName: 'Sterling Midnight',
-      brandSubtitle: 'Institutional Terminal',
-      heading: 'Secure Verification',
-      description:
-        'Access the Sovereign Ledger with your verified credentials.',
-      emailLabel: 'Institutional Email',
-      emailPlaceholder: 'user@institution.domain',
-      passwordLabel: 'Security Password',
-      forgotCredentials: 'Forgot credentials?',
-      tlsEncryption: 'TLS 1.3 Encryption',
-      biometricReady: 'Biometric Ready',
+      brandSubtitle: 'Broker Directory',
+      heading: 'Welcome Back',
+      description: 'Log in to your account to continue.',
+      emailLabel: 'Email',
+      emailPlaceholder: 'you@example.com',
+      passwordLabel: 'Password',
+      forgotCredentials: 'Forgot password?',
+      tlsEncryption: 'Secure Connection',
+      biometricReady: 'Encrypted Login',
       submit: 'Login',
       submitting: 'Logging in...',
       noAccount: "Don't have an account?",
@@ -78,36 +80,40 @@ export const translations = {
     },
     register: {
       title: 'Register',
-      brandLabel: 'Sovereign Ledger',
-      heading: 'Institutional Onboarding',
-      description:
-        'Complete your verification credentials to access the terminal.',
+      brandLabel: 'Broker Directory',
+      heading: 'Create an Account',
+      description: 'Fill in your details to get started.',
       fullName: 'Full Name',
-      fullNamePlaceholder: 'Alexander Sterling',
-      email: 'Institutional Email',
-      emailPlaceholder: 'verification@reserve.int',
-      password: 'Security Password',
+      fullNamePlaceholder: 'John Smith',
+      email: 'Email',
+      emailPlaceholder: 'you@example.com',
+      password: 'Password',
       confirmPassword: 'Confirm Password',
-      agreementPrefix:
-        'I acknowledge that I am authorized to represent this entity and agree to the',
-      agreementMsa: 'Institutional Master Service Agreement',
+      agreementPrefix: 'I agree to the',
+      agreementMsa: 'Terms of Service',
       agreementAnd: 'and',
-      agreementPrivacy: 'Privacy Protocols',
-      submit: 'Initialize Registration',
+      agreementPrivacy: 'Privacy Policy',
+      submit: 'Register',
       submitting: 'Registering...',
-      haveAccount: 'Already verified?',
-      loginLink: 'Institutional Login',
-      aesEncrypted: 'AES-256 Encrypted',
-      gdprCompliant: 'GDPR Compliant',
-      secFramework: 'SEC Framework',
-      panelTitle: 'Secure Your Entry into the Sovereign Ledger',
+      haveAccount: 'Already have an account?',
+      loginLink: 'Login',
+      aesEncrypted: 'Encrypted',
+      gdprCompliant: 'Privacy Protected',
+      secFramework: 'Verified Platform',
+      panelTitle: 'Join the Broker Directory',
       panelDescription:
-        'Access the definitive institutional terminal for global capital management and verified digital asset custody. Join the network of sovereign entities and elite financial brokers.',
+        'Create an account to list your brokerage and connect with investors looking for trusted partners.',
       statCapitalValue: '12.4T',
       statCapitalLabel: 'Managed Capital',
       statUptimeValue: '99.9%',
       statUptimeLabel: 'Uptime SLA',
       invalidEmail: 'Please enter a valid email address',
+      passwordRequirementsTitle: 'Password must contain:',
+      passwordRuleMinLength: 'Minimum 8 characters',
+      passwordRuleLetter: 'At least one letter',
+      passwordRuleNumber: 'At least one number',
+      passwordTooWeak: 'Password does not meet the requirements',
+      passwordMismatch: 'Passwords do not match',
     },
     create: {
       title: 'Submit Broker',
@@ -179,6 +185,67 @@ export const translations = {
       sovereignBonds: 'Sovereign Bonds',
       cryptoEtps: 'Crypto ETPs',
     },
+    market: {
+      title: 'Markets Overview',
+      description:
+        'Explore the global markets our partner network provides access to, spanning forex, indices, commodities, and digital assets.',
+      items: [
+        {
+          title: 'Forex',
+          desc: 'Trade major, minor, and exotic currency pairs with deep liquidity from institutional-grade counterparties.',
+        },
+        {
+          title: 'Indices',
+          desc: 'Gain exposure to leading global stock indices, including US, European, and Asian benchmarks.',
+        },
+        {
+          title: 'Commodities',
+          desc: 'Access energy, metals, and agricultural markets through regulated trading venues.',
+        },
+        {
+          title: 'Crypto ETPs',
+          desc: 'Diversify with exchange-traded products tracking major digital assets under regulatory oversight.',
+        },
+      ],
+    },
+    analysis: {
+      title: 'Market Analysis',
+      description:
+        'Stay informed with curated insights covering technical, fundamental, and sentiment-driven perspectives on global markets.',
+      items: [
+        {
+          title: 'Technical Analysis',
+          desc: 'Chart patterns, indicators, and price action studies to identify potential entry and exit points.',
+        },
+        {
+          title: 'Fundamental Analysis',
+          desc: 'Macroeconomic data, central bank policy, and corporate earnings that drive long-term market trends.',
+        },
+        {
+          title: 'Sentiment Analysis',
+          desc: 'Positioning data and market sentiment indicators to gauge crowd behavior and contrarian opportunities.',
+        },
+      ],
+    },
+    education: {
+      title: 'Education Center',
+      description:
+        'Build your trading knowledge with resources designed for both new and experienced investors.',
+      items: [
+        {
+          title: 'Trading Basics',
+          desc: 'Learn the fundamentals of order types, leverage, margin, and risk-to-reward ratios.',
+        },
+        {
+          title: 'Risk Management',
+          desc: 'Discover position sizing, stop-loss strategies, and portfolio diversification techniques.',
+        },
+        {
+          title: 'Advanced Strategies',
+          desc: 'Explore trend-following, mean reversion, and multi-asset trading strategies used by professionals.',
+        },
+      ],
+    },
     toast: {
       loginSuccess: 'Logged in successfully',
       registerSuccess: 'Account created successfully',
@@ -186,6 +253,8 @@ export const translations = {
       brokerUpdateSuccess: 'Broker updated successfully',
       brokerStatusUpdateSuccess: 'Broker status updated successfully',
       genericError: 'Something went wrong, please try again',
+      tooManyRequests:
+        "You're doing that too often. Please wait a moment and try again.",
     },
   },
   th: {
@@ -197,6 +266,9 @@ export const translations = {
       backHome: 'กลับหน้าแรก',
       notFoundTitle: 'ไม่พบหน้าที่คุณต้องการ',
       notFoundDescription: 'หน้าที่คุณกำลังค้นหาไม่มีอยู่ หรือถูกย้ายไปแล้ว',
+      rateLimitTitle: 'คุณทำรายการเร็วเกินไป',
+      rateLimitDescription:
+        'ระบบได้รับคำขอจากคุณถี่เกินไปในเวลาสั้นๆ กรุณารอสักครู่แล้วลองใหม่อีกครั้ง',
     },
     nav: {
       home: 'หน้าแรก',
@@ -247,16 +319,15 @@ export const translations = {
     login: {
       title: 'เข้าสู่ระบบ',
       brandName: 'Sterling Midnight',
-      brandSubtitle: 'Institutional Terminal',
-      heading: 'ยืนยันตัวตนแบบปลอดภัย',
-      description:
-        'เข้าถึง Sovereign Ledger ด้วยข้อมูลรับรองที่ยืนยันแล้วของคุณ',
-      emailLabel: 'อีเมลสถาบัน',
-      emailPlaceholder: 'user@institution.domain',
-      passwordLabel: 'รหัสผ่านความปลอดภัย',
-      forgotCredentials: 'ลืมข้อมูลรับรอง?',
-      tlsEncryption: 'TLS 1.3 Encryption',
-      biometricReady: 'พร้อมใช้ Biometric',
+      brandSubtitle: 'Broker Directory',
+      heading: 'ยินดีต้อนรับกลับ',
+      description: 'เข้าสู่ระบบเพื่อใช้งานบัญชีของคุณ',
+      emailLabel: 'อีเมล',
+      emailPlaceholder: 'you@example.com',
+      passwordLabel: 'รหัสผ่าน',
+      forgotCredentials: 'ลืมรหัสผ่าน?',
+      tlsEncryption: 'การเชื่อมต่อปลอดภัย',
+      biometricReady: 'เข้ารหัสข้อมูล',
       submit: 'เข้าสู่ระบบ',
       submitting: 'กำลังเข้าสู่ระบบ...',
       noAccount: 'ยังไม่มีบัญชี?',
@@ -265,35 +336,40 @@ export const translations = {
     },
     register: {
       title: 'สมัครสมาชิก',
-      brandLabel: 'Sovereign Ledger',
-      heading: 'การลงทะเบียนระดับสถาบัน',
-      description: 'กรอกข้อมูลยืนยันตัวตนของคุณให้ครบถ้วนเพื่อเข้าใช้งานระบบ',
+      brandLabel: 'Broker Directory',
+      heading: 'สร้างบัญชีใหม่',
+      description: 'กรอกข้อมูลของคุณเพื่อเริ่มใช้งาน',
       fullName: 'ชื่อ-นามสกุล',
-      fullNamePlaceholder: 'Alexander Sterling',
-      email: 'อีเมลสถาบัน',
-      emailPlaceholder: 'verification@reserve.int',
-      password: 'รหัสผ่านความปลอดภัย',
+      fullNamePlaceholder: 'สมชาย ใจดี',
+      email: 'อีเมล',
+      emailPlaceholder: 'you@example.com',
+      password: 'รหัสผ่าน',
       confirmPassword: 'ยืนยันรหัสผ่าน',
-      agreementPrefix:
-        'ข้าพเจ้ารับรองว่าได้รับมอบอำนาจให้เป็นตัวแทนขององค์กรนี้ และยอมรับ',
-      agreementMsa: 'ข้อตกลงการให้บริการระดับสถาบัน',
+      agreementPrefix: 'ฉันยอมรับ',
+      agreementMsa: 'ข้อกำหนดการใช้งาน',
       agreementAnd: 'และ',
       agreementPrivacy: 'นโยบายความเป็นส่วนตัว',
-      submit: 'เริ่มการลงทะเบียน',
+      submit: 'สมัครสมาชิก',
       submitting: 'กำลังสมัครสมาชิก...',
-      haveAccount: 'ยืนยันตัวตนแล้ว?',
-      loginLink: 'เข้าสู่ระบบสถาบัน',
-      aesEncrypted: 'เข้ารหัส AES-256',
-      gdprCompliant: 'รองรับ GDPR',
-      secFramework: 'มาตรฐาน SEC',
-      panelTitle: 'เข้าสู่ Sovereign Ledger อย่างปลอดภัย',
+      haveAccount: 'มีบัญชีอยู่แล้ว?',
+      loginLink: 'เข้าสู่ระบบ',
+      aesEncrypted: 'เข้ารหัสข้อมูล',
+      gdprCompliant: 'คุ้มครองความเป็นส่วนตัว',
+      secFramework: 'แพลตฟอร์มที่เชื่อถือได้',
+      panelTitle: 'เข้าร่วม Broker Directory',
       panelDescription:
-        'เข้าถึงระบบระดับสถาบันสำหรับการบริหารเงินทุนระดับโลกและการดูแลสินทรัพย์ดิจิทัลที่ผ่านการยืนยัน ร่วมเครือข่ายองค์กรและโบรกเกอร์ชั้นนำ',
+        'สร้างบัญชีเพื่อลงทะเบียนโบรกเกอร์ของคุณและเชื่อมต่อกับนักลงทุนที่กำลังมองหาพันธมิตรที่เชื่อถือได้',
       statCapitalValue: '12.4T',
       statCapitalLabel: 'มูลค่าเงินทุนภายใต้การจัดการ',
       statUptimeValue: '99.9%',
       statUptimeLabel: 'อัตราความพร้อมใช้งาน',
       invalidEmail: 'กรุณากรอกอีเมลให้ถูกต้อง',
+      passwordRequirementsTitle: 'รหัสผ่านต้องประกอบด้วย:',
+      passwordRuleMinLength: 'อย่างน้อย 8 ตัวอักษร',
+      passwordRuleLetter: 'มีตัวอักษรอย่างน้อย 1 ตัว',
+      passwordRuleNumber: 'มีตัวเลขอย่างน้อย 1 ตัว',
+      passwordTooWeak: 'รหัสผ่านไม่ตรงตามเงื่อนไขที่กำหนด',
+      passwordMismatch: 'รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน',
     },
     create: {
       title: 'เพิ่มโบรกเกอร์',
@@ -365,6 +441,67 @@ export const translations = {
       sovereignBonds: 'พันธบัตรรัฐบาล',
       cryptoEtps: 'Crypto ETPs',
     },
+    market: {
+      title: 'ภาพรวมตลาด',
+      description:
+        'สำรวจตลาดทั่วโลกที่เครือข่ายพันธมิตรของเราให้การเข้าถึง ครอบคลุมตลาดเงินตรา ดัชนี สินค้าโภคภัณฑ์ และสินทรัพย์ดิจิทัล',
+      items: [
+        {
+          title: 'ตลาดเงินตรา (Forex)',
+          desc: 'เทรดคู่สกุลเงินหลัก สกุลเงินรอง และสกุลเงินตลาดเกิดใหม่ ด้วยสภาพคล่องระดับสถาบัน',
+        },
+        {
+          title: 'ดัชนี',
+          desc: 'เข้าถึงดัชนีตลาดหุ้นชั้นนำทั่วโลก ทั้งสหรัฐฯ ยุโรป และเอเชีย',
+        },
+        {
+          title: 'สินค้าโภคภัณฑ์',
+          desc: 'เข้าถึงตลาดพลังงาน โลหะ และสินค้าเกษตรผ่านช่องทางการเทรดที่อยู่ภายใต้การกำกับดูแล',
+        },
+        {
+          title: 'Crypto ETPs',
+          desc: 'กระจายความเสี่ยงด้วยผลิตภัณฑ์ซื้อขายแลกเปลี่ยนที่ติดตามสินทรัพย์ดิจิทัลหลัก ภายใต้การกำกับดูแล',
+        },
+      ],
+    },
+    analysis: {
+      title: 'บทวิเคราะห์ตลาด',
+      description:
+        'ติดตามข้อมูลเชิงลึกที่คัดสรร ครอบคลุมมุมมองด้านเทคนิค ปัจจัยพื้นฐาน และความเชื่อมั่นของตลาดทั่วโลก',
+      items: [
+        {
+          title: 'การวิเคราะห์ทางเทคนิค',
+          desc: 'รูปแบบกราฟ ตัวชี้วัด และการศึกษาความเคลื่อนไหวของราคา เพื่อหาจุดเข้าและออกที่เหมาะสม',
+        },
+        {
+          title: 'การวิเคราะห์ปัจจัยพื้นฐาน',
+          desc: 'ข้อมูลเศรษฐกิจมหภาค นโยบายธนาคารกลาง และผลประกอบการ ที่ส่งผลต่อแนวโน้มตลาดในระยะยาว',
+        },
+        {
+          title: 'การวิเคราะห์ความเชื่อมั่น',
+          desc: 'ข้อมูลโพสิชันและตัวชี้วัดความเชื่อมั่นตลาด เพื่อประเมินพฤติกรรมกลุ่มและโอกาสสวนตลาด',
+        },
+      ],
+    },
+    education: {
+      title: 'ศูนย์ความรู้',
+      description:
+        'เสริมความรู้การเทรดด้วยเนื้อหาที่ออกแบบมาสำหรับทั้งนักลงทุนใหม่และมีประสบการณ์',
+      items: [
+        {
+          title: 'พื้นฐานการเทรด',
+          desc: 'เรียนรู้พื้นฐานประเภทคำสั่ง เลเวอเรจ มาร์จิ้น และอัตราส่วนความเสี่ยงต่อผลตอบแทน',
+        },
+        {
+          title: 'การบริหารความเสี่ยง',
+          desc: 'ค้นพบการกำหนดขนาดโพสิชัน กลยุทธ์ stop-loss และการกระจายความเสี่ยงในพอร์ต',
+        },
+        {
+          title: 'กลยุทธ์ขั้นสูง',
+          desc: 'สำรวจกลยุทธ์ trend-following, mean reversion และการเทรดแบบ multi-asset ที่มืออาชีพใช้',
+        },
+      ],
+    },
     toast: {
       loginSuccess: 'เข้าสู่ระบบสำเร็จ',
       registerSuccess: 'สมัครสมาชิกสำเร็จ',
@@ -372,6 +509,7 @@ export const translations = {
       brokerUpdateSuccess: 'แก้ไขข้อมูลโบรกเกอร์สำเร็จ',
       brokerStatusUpdateSuccess: 'อัปเดตสถานะโบรกเกอร์สำเร็จ',
       genericError: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+      tooManyRequests: 'คุณทำรายการนี้บ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่อีกครั้ง',
     },
   },
 } as const satisfies Record<Locale, unknown>;
